@@ -1,6 +1,6 @@
 # GEMINI.md
 
-This project is a high-performance, full-stack React development template leveraging the Bun runtime. It is designed for a seamless developer experience with a unified "single-port" architecture.
+This project is makuro-base-template, a high-performance, full-stack React development template leveraging the Bun runtime. It is designed for a seamless developer experience with a unified "single-port" architecture.
 
 ## Project Overview
 

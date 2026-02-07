@@ -1,4 +1,4 @@
-# bun-react-template
+# makuro-base-template
 
 To install dependencies:
 
