@@ -13,6 +13,7 @@ import { Inspector } from "react-dev-inspector";
 import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import { ModalsProvider } from "@mantine/modals";
+import { VITE_PUBLIC_URL } from "./utils/env";
 
 // Create a new router instance
 export const router = createRouter({
@@ -39,11 +40,12 @@ const elem = document.getElementById("root")!;
 const app = (
 	<InspectorWrapper
 		keys={["shift", "a"]}
-		onClickElement={(e) => {
-			if (!e.codeInfo) return;
-
-			const url = import.meta.env.VITE_PUBLIC_URL;
-			fetch(`${url}/__open-in-editor`, {
+		    onClickElement={(e) => {
+		      if (!e.codeInfo) return;
+		
+		      const url = VITE_PUBLIC_URL;
+		      fetch(`${url}/__open-in-editor`, {
+		
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
