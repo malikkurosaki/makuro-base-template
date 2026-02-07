@@ -1,64 +1,59 @@
 # GEMINI.md
 
-This file provides instructional context for the Gemini AI agent to understand and interact with this project efficiently.
+This project is a high-performance, full-stack React development template leveraging the Bun runtime. It is designed for a seamless developer experience with a unified "single-port" architecture.
 
 ## Project Overview
 
-A high-performance web application template using a "Single Port" architecture. It combines a Bun/Elysia backend with a React frontend, served through Vite in middleware mode.
+*   **Runtime**: [Bun](https://bun.sh/)
+*   **Architecture**: "Single Port" (default: 3000). [ElysiaJS](https://elysiajs.com/) serves as the main HTTP server, integrating [Vite](https://vitejs.dev/) in **middleware mode** during development to provide HMR and React Dev Inspector support.
+*   **Frontend**: React 19 with [TanStack React Router](https://tanstack.com/router/latest) for type-safe, file-based routing.
+*   **UI Framework**: [Mantine UI](https://mantine.dev/) for a comprehensive component library and hooks.
+*   **Authentication**: [Better Auth](https://www.better-auth.com/) integrated with Elysia.
+*   **Database**: [Prisma ORM](https://www.prisma.io/) for type-safe database access.
+*   **Tooling**: [Biome](https://biomejs.dev/) for ultra-fast linting and formatting.
 
--   **Runtime**: [Bun](https://bun.sh/)
--   **Backend**: [ElysiaJS](https://elysiajs.com/)
--   **Frontend**: React 19
--   **Routing**: [TanStack React Router](https://tanstack.com/router/latest) (File-based)
--   **UI Framework**: [Mantine UI](https://mantine.dev/)
--   **Bundler/Dev Tooling**: [Vite](https://vitejs.dev/) (Middleware Mode)
--   **Linting/Formatting**: [Biome](https://biomejs.dev/)
--   **Developer Experience**: Single port (3000), HMR, and [react-dev-inspector](https://github.com/zthxxx/react-dev-inspector) integration.
+## Building and Running
 
-## Architecture: Single Port (DX)
+### Development
+*   **Install dependencies**: `bun install`
+*   **Start development server**: `bun run dev` (Runs Elysia + Vite Middleware)
+*   **Update Route Tree**: `bun x tsr generate` (usually automatic via Vite plugin)
+*   **Database Migration**: `bun x prisma migrate dev`
 
-The Elysia server (running on Bun) acts as the primary entry point. During development, it bridges requests to Vite's middleware.
+### Production
+*   **Build Frontend**: `bun run build` (Outputs to `dist/`)
+*   **Start Production Server**: `bun run start` (Serves pre-built assets from `dist/` via Elysia)
 
--   **Backend**: Handles API routes (`/api/*`) and custom developer tools (e.g., `/__open-in-editor`).
--   **Frontend**: All other requests are passed to Vite for HMR and asset transformation.
--   **Entry Points**:
-    -   Server: `src/index.ts`
-    -   Vite Config: `src/vite.ts`
-    -   Frontend: `src/frontend.tsx`
-    -   HTML: `src/index.html`
+### Quality Control
+*   **Lint**: `bun run lint` (Biome check)
+*   **Format**: `bun run format` (Biome write)
+*   **Type Check**: `bun x tsc --noEmit`
 
-## Development Commands
+## Development Conventions
 
--   **Install Dependencies**: `bun install`
--   **Start Dev Server**: `bun run dev` (Runs Elysia + Vite Middleware)
--   **Lint & Fix**: `bun run lint` (Biome check)
--   **Format Code**: `bun run format` (Biome format)
--   **Type Check**: `bun x tsc --noEmit`
--   **Production Build**: `bun run build` (Static build)
--   **Production Start**: `bun run start` (Serve production build)
+### Code Style & Structure
+*   **Formatting**: Strictly use **Biome**. The project uses **tab indentation** and **double quotes** for JavaScript/TypeScript.
+*   **Imports**: 
+    *   Use the `node:` protocol for Node.js built-ins (e.g., `import fs from "node:fs"`).
+    *   Use the `@/` alias for absolute paths from the `src/` directory (e.g., `import { auth } from "@/utils/auth"`).
+*   **Routing**: New routes should be added as files in `src/routes/` to leverage TanStack Router's file-based routing system.
 
-## Project Structure
+### Backend/API
+*   **Prefix**: All backend API routes are prefixed with `/api`.
+*   **Documentation**: Swagger documentation is available at `/api/docs` in development.
+*   **Authentication**: Handled at `/api/auth/*`. Protected routes use the `apiMiddleware` and custom guards.
 
--   `src/`: Main source code.
-    -   `src/index.ts`: Elysia server entry point.
-    -   `src/vite.ts`: Vite server configuration for middleware mode.
-    -   `src/frontend.tsx`: React client entry point.
-    -   `src/routes/`: TanStack Router file-based routes.
-        -   `src/routes/__root.tsx`: Root layout with authentication guards.
-        -   `src/routes/index.tsx`: Home page.
-    -   `src/utils/`: Helper utilities (e.g., `open-in-editor.ts`, API clients).
--   `biome.json`: Biome configuration (tabs, double quotes, import organization).
--   `postcss.config.cjs`: PostCSS configuration for Mantine UI.
+### Frontend
+*   **Theme**: Mantine is configured via `MantineProvider` in `src/App.tsx`.
+*   **State Management**: [Valtio](https://valtio.pmnd.rs/) is used for simple proxy-based state (see `src/store/`).
+*   **Dev Tools**: TanStack Router Devtools and React Dev Inspector are enabled in development.
 
-## Coding Conventions
+## Project Layout
 
--   **Formatter/Linter**: Strictly use **Biome**. Indentation is set to **tabs**.
--   **Routing**: Use TanStack Router's file-based system in `src/routes/`. Avoid manual route definitions unless necessary.
--   **UI Components**: Prefer Mantine UI components. Always wrap the app with `MantineProvider`.
--   **Imports**: Use the `node:` protocol for Node.js built-ins (e.g., `import fs from "node:fs"`). Biome handles import organization automatically.
--   **Types**: Maintain strict TypeScript compliance. Use `tsc --noEmit` to verify.
-
-## Integration Details
-
--   **React Dev Inspector**: Active in development. Use `Alt/Option + Click` to jump from the browser to the code in your editor.
--   **Elysia-Vite Bridge**: The bridge in `src/index.ts` mocks Node.js `req`/`res` objects using a `Proxy` to make Bun's fetch-based requests compatible with Vite's Connect middleware.
+*   `src/index.ts`: Unified server entry point (Dev/Prod conditional logic).
+*   `src/vite.ts`: Vite server configuration (Dev-only).
+*   `src/routes/`: Frontend route definitions and layouts.
+*   `src/api/`: Elysia route modules.
+*   `src/utils/`: Shared utilities (Auth, DB, Logging).
+*   `prisma/`: Database schema and migrations.
+*   `dist/`: Production build output (Git ignored).

@@ -94,7 +94,9 @@ function DashboardApikeyComponent() {
 			setCreating(true);
 			const response = await apiClient.api.apikey.post({
 				name: newKeyName,
-				expiresAt: newKeyExpiresAt ? dayjs(newKeyExpiresAt).toISOString() : undefined,
+				expiresAt: newKeyExpiresAt
+					? dayjs(newKeyExpiresAt).toISOString()
+					: undefined,
 			});
 
 			if (response.data) {

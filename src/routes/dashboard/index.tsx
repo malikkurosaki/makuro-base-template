@@ -7,13 +7,13 @@ import {
 	Container,
 	Grid,
 	Group,
-	Modal,
 	Progress,
 	SimpleGrid,
 	Stack,
 	Text,
 	Title,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import {
 	IconClock,
 	IconDatabase,
@@ -21,7 +21,6 @@ import {
 	IconUserCheck,
 } from "@tabler/icons-react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
 import { useSnapshot } from "valtio";
 import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
@@ -33,7 +32,19 @@ export const Route = createFileRoute("/dashboard/")({
 function DashboardComponent() {
 	const snap = useSnapshot(authStore);
 	const navigate = useNavigate();
-	const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+
+	const openLogoutModal = () =>
+		modals.openConfirmModal({
+			title: "Confirm Logout",
+			centered: true,
+			children: <Text size="sm">Are you sure you want to log out?</Text>,
+			labels: { confirm: "Logout", cancel: "Cancel" },
+			confirmProps: { color: "red" },
+			onConfirm: async () => {
+				await authClient.signOut();
+				navigate({ to: "/signin" });
+			},
+		});
 
 	// Mock data for dashboard stats
 	const statsData = [
@@ -84,11 +95,7 @@ function DashboardComponent() {
 							</Badge>
 						</div>
 					</Group>
-					<Button
-						variant="outline"
-						color="red"
-						onClick={() => setLogoutModalOpen(true)}
-					>
+					<Button variant="outline" color="red" onClick={openLogoutModal}>
 						Sign Out
 					</Button>
 				</Group>
@@ -197,28 +204,6 @@ function DashboardComponent() {
 					</Card>
 				</Grid.Col>
 			</Grid>
-			<Modal
-				opened={logoutModalOpen}
-				onClose={() => setLogoutModalOpen(false)}
-				title="Confirm Logout"
-				centered
-			>
-				<Text mb="md">Are you sure you want to log out?</Text>
-				<Group justify="flex-end">
-					<Button variant="outline" onClick={() => setLogoutModalOpen(false)}>
-						Cancel
-					</Button>
-					<Button
-						color="red"
-						onClick={() => {
-							authClient.signOut();
-							setLogoutModalOpen(false);
-						}}
-					>
-						Logout
-					</Button>
-				</Group>
-			</Modal>
 		</Container>
 	);
 }
