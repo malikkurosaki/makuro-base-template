@@ -14,9 +14,17 @@ const isProduction = process.env.NODE_ENV === "production";
 const api = new Elysia({
 	prefix: "/api",
 })
-	.all("/auth/*", ({ request }) => auth.handler(request))
 	.use(cors())
-	.use(
+	.all("/auth/*", ({ request }) => auth.handler(request))
+	.get("/session", async ({ request }) => {
+		const data = await auth.api.getSession({ headers: request.headers });
+		return { data };
+	})
+	.use(apiMiddleware)
+	.use(apikey);
+
+if (!isProduction) {
+	api.use(
 		swagger({
 			path: "/docs",
 			documentation: {
@@ -26,13 +34,8 @@ const api = new Elysia({
 				},
 			},
 		}),
-	)
-	.get("/session", async ({ request }) => {
-		const data = await auth.api.getSession({ headers: request.headers });
-		return { data };
-	})
-	.use(apiMiddleware)
-	.use(apikey);
+	);
+}
 
 const app = new Elysia().use(api);
 
@@ -149,28 +152,30 @@ if (!isProduction) {
 		});
 	});
 } else {
-	// Production: Serve static files from dist
-	app.get("*", async ({ request }) => {
+	// Production: Final catch-all for static files and SPA fallback
+	app.all("*", async ({ request }) => {
 		const url = new URL(request.url);
-		let pathname = url.pathname;
+		const pathname = url.pathname;
 
-		// Skip API routes
-		if (pathname.startsWith("/api")) {
-			return new Response("Not Found", { status: 404 });
+		// 1. Try exact match in dist
+		let filePath = path.join("dist", pathname === "/" ? "index.html" : pathname);
+		
+		// 2. If not found and looks like an asset (has extension), try root of dist
+		if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+			if (pathname.includes(".") && !pathname.endsWith("/")) {
+				const filename = path.basename(pathname);
+				const fallbackPath = path.join("dist", filename);
+				if (fs.existsSync(fallbackPath) && fs.statSync(fallbackPath).isFile()) {
+					filePath = fallbackPath;
+				}
+			}
 		}
-
-		if (pathname === "/") {
-			pathname = "/index.html";
-		}
-
-		const filePath = path.join("dist", pathname);
 
 		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-			const file = Bun.file(filePath);
-			return new Response(file);
+			return new Response(Bun.file(filePath));
 		}
 
-		// SPA Fallback
+		// 3. SPA Fallback: Serve index.html
 		const indexHtml = path.join("dist", "index.html");
 		if (fs.existsSync(indexHtml)) {
 			return new Response(Bun.file(indexHtml));
