@@ -1,8 +1,9 @@
 import { edenTreaty } from "@elysiajs/eden";
 import type { ApiApp } from "../index";
+import { VITE_PUBLIC_URL } from "./env";
 
 const baseUrl =
-	import.meta.env.VITE_PUBLIC_URL ||
+	VITE_PUBLIC_URL ||
 	(typeof window !== "undefined"
 		? window.location.origin
 		: "http://localhost:3000");

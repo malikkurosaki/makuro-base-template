@@ -13,7 +13,7 @@ import { Inspector } from "react-dev-inspector";
 import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import { ModalsProvider } from "@mantine/modals";
-import { VITE_PUBLIC_URL } from "./utils/env";
+import { VITE_PUBLIC_URL, IS_DEV } from "./utils/env";
 
 // Create a new router instance
 export const router = createRouter({
@@ -32,7 +32,7 @@ const theme = createTheme({
 	/** Theme customization here */
 });
 
-const InspectorWrapper = import.meta.env.DEV
+const InspectorWrapper = IS_DEV
 	? Inspector
 	: ({ children }: { children: React.ReactNode }) => <>{children}</>;
 

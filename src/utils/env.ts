@@ -21,3 +21,11 @@ export const getEnv = (key: string, defaultValue = ""): string => {
 };
 
 export const VITE_PUBLIC_URL = getEnv("VITE_PUBLIC_URL", "http://localhost:3000");
+
+export const IS_DEV = (() => {
+	try {
+		return typeof import.meta.env !== "undefined" && import.meta.env.DEV;
+	} catch {
+		return false;
+	}
+})();
