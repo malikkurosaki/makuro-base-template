@@ -15,8 +15,10 @@ const api = new Elysia({
 	prefix: "/api",
 })
 	.all("/auth/*", ({ request }) => auth.handler(request))
-	.use(cors())
-	.use(
+	.use(cors());
+
+if (!isProduction) {
+	api.use(
 		swagger({
 			path: "/docs",
 			documentation: {
@@ -26,7 +28,10 @@ const api = new Elysia({
 				},
 			},
 		}),
-	)
+	);
+}
+
+api
 	.get("/session", async ({ request }) => {
 		const data = await auth.api.getSession({ headers: request.headers });
 		return { data };
