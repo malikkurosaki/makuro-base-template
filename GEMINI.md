@@ -1,11 +1,12 @@
 # GEMINI.md
 
-This project is makuro-base-template, a high-performance, full-stack React development template leveraging the Bun runtime. It is designed for a seamless developer experience with a unified "single-port" architecture.
+This project is **makuro-base-template**, a high-performance, full-stack React development template leveraging the Bun runtime. It is designed for a seamless developer experience with a unified "single-port" architecture and a Contract-First API design.
 
 ## Project Overview
 
 *   **Runtime**: [Bun](https://bun.sh/)
 *   **Architecture**: "Single Port" (default: 3000). [ElysiaJS](https://elysiajs.com/) serves as the main HTTP server, integrating [Vite](https://vitejs.dev/) in **middleware mode** during development to provide HMR and React Dev Inspector support.
+*   **API Design**: **Contract-First (OpenAPI)**. The frontend uses `openapi-fetch` with types generated from the backend's OpenAPI schema, ensuring a decoupled but type-safe connection.
 *   **Frontend**: React 19 with [TanStack React Router](https://tanstack.com/router/latest) for type-safe, file-based routing.
 *   **UI Framework**: [Mantine UI](https://mantine.dev/) for a comprehensive component library and hooks.
 *   **Authentication**: [Better Auth](https://www.better-auth.com/) integrated with Elysia.
@@ -18,7 +19,7 @@ This project is makuro-base-template, a high-performance, full-stack React devel
 *   **Install dependencies**: `bun install`
 *   **Start development server**: `bun run dev` (Runs Elysia + Vite Middleware)
 *   **Update Route Tree**: `bun x tsr generate` (usually automatic via Vite plugin)
-*   **Generate API Types**: `bun run gen:api` (Generates types from OpenAPI schema)
+*   **Generate API Types**: `bun run gen:api` (Syncs frontend types with backend schema)
 *   **Database Migration**: `bun x prisma migrate dev`
 
 ### Production
@@ -36,25 +37,32 @@ This project is makuro-base-template, a high-performance, full-stack React devel
 *   **Formatting**: Strictly use **Biome**. The project uses **tab indentation** and **double quotes** for JavaScript/TypeScript.
 *   **Imports**: 
     *   Use the `node:` protocol for Node.js built-ins (e.g., `import fs from "node:fs"`).
-    *   Use the `@/` alias for absolute paths from the `src/` directory (e.g., `import { auth } from "@/utils/auth"`).
-*   **Routing**: New routes should be added as files in `src/routes/` to leverage TanStack Router's file-based routing system.
+    *   Use the `@/` alias for absolute paths from the `src/` directory.
+*   **Routing**: Use TanStack Router's file-based system in `src/routes/`.
+
+### API Workflow (Contract-First)
+*   **Backend First**: Define schemas in Elysia routes (using `t.Object`, etc.).
+*   **Sync**: Run `bun run gen:api` to export the OpenAPI `schema.json` and generate TypeScript types in `generated/api.ts`.
+*   **Frontend Usage**: Use the `apiClient` from `@/utils/api-client`, which uses `openapi-fetch` for type-safe requests.
 
 ### Backend/API
 *   **Prefix**: All backend API routes are prefixed with `/api`.
-*   **Documentation**: Swagger documentation is available at `/api/docs` in development.
-*   **Authentication**: Handled at `/api/auth/*`. Protected routes use the `apiMiddleware` and custom guards.
+*   **Documentation**: Swagger/OpenAPI documentation is available at `/api/docs` in development.
+*   **Authentication**: Handled at `/api/auth/*`. Protected routes use the `apiMiddleware`.
 
 ### Frontend
-*   **Theme**: Mantine is configured via `MantineProvider` in `src/App.tsx`.
+*   **Theme**: Mantine is configured via `MantineProvider` in `src/frontend.tsx`.
+*   **Modals**: Use the imperative `modals` manager from `@mantine/modals`.
 *   **State Management**: [Valtio](https://valtio.pmnd.rs/) is used for simple proxy-based state (see `src/store/`).
-*   **Dev Tools**: TanStack Router Devtools and React Dev Inspector are enabled in development.
 
 ## Project Layout
 
 *   `src/index.ts`: Unified server entry point (Dev/Prod conditional logic).
 *   `src/vite.ts`: Vite server configuration (Dev-only).
+*   `src/api/`: Elysia route modules and schema definitions.
 *   `src/routes/`: Frontend route definitions and layouts.
-*   `src/api/`: Elysia route modules.
-*   `src/utils/`: Shared utilities (Auth, DB, Logging).
+*   `src/utils/`: Shared utilities (Auth, DB, Env, API Client).
+*   `scripts/`: Automation scripts (e.g., `generate-schema.ts`).
+*   `generated/`: Auto-generated artifacts (OpenAPI schema and types).
 *   `prisma/`: Database schema and migrations.
-*   `dist/`: Production build output (Git ignored).
+*   `dist/`: Production build output.

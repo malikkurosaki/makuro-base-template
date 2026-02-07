@@ -20,7 +20,13 @@
 	},
 	"overrides": [
 		{
-			"includes": ["src/routeTree.gen.ts", "dist/**", "node_modules/**"],
+			"includes": [
+				"src/routeTree.gen.ts",
+				"dist/**",
+				"node_modules/**",
+				"generated/**",
+				"scripts/**"
+			],
 			"linter": { "enabled": false },
 			"formatter": { "enabled": false },
 			"assist": { "enabled": false }

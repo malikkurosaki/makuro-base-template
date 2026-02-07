@@ -11,6 +11,7 @@ const api = new Elysia({
 	prefix: "/api",
 })
 	.use(cors())
+	.get("/health", () => ({ ok: true }))
 	.all("/auth/*", ({ request }) => auth.handler(request))
 	.get("/session", async ({ request }) => {
 		const data = await auth.api.getSession({ headers: request.headers });
