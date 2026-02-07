@@ -18,6 +18,7 @@ This project is makuro-base-template, a high-performance, full-stack React devel
 *   **Install dependencies**: `bun install`
 *   **Start development server**: `bun run dev` (Runs Elysia + Vite Middleware)
 *   **Update Route Tree**: `bun x tsr generate` (usually automatic via Vite plugin)
+*   **Generate API Types**: `bun run gen:api` (Generates types from OpenAPI schema)
 *   **Database Migration**: `bun x prisma migrate dev`
 
 ### Production

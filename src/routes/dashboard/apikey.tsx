@@ -68,9 +68,12 @@ function DashboardApikeyComponent() {
 	const fetchApiKeys = useCallback(async () => {
 		try {
 			setLoading(true);
-			const response = await apiClient.api.apikey.get();
-			if (response.data) {
-				setApiKeys((response.data.apiKeys as any) || []);
+			const { data, error } = await apiClient.GET("/api/apikey/");
+			if (data) {
+				setApiKeys((data.apiKeys as any) || []);
+			}
+			if (error) {
+				setError("Failed to load API keys");
 			}
 		} catch (err) {
 			setError("Failed to load API keys");
@@ -92,18 +95,23 @@ function DashboardApikeyComponent() {
 
 		try {
 			setCreating(true);
-			const response = await apiClient.api.apikey.post({
-				name: newKeyName,
-				expiresAt: newKeyExpiresAt
-					? dayjs(newKeyExpiresAt).toISOString()
-					: undefined,
+			const { data, error } = await apiClient.POST("/api/apikey/", {
+				body: {
+					name: newKeyName,
+					expiresAt: newKeyExpiresAt
+						? dayjs(newKeyExpiresAt).toISOString()
+						: undefined,
+				},
 			});
 
-			if (response.data) {
-				setApiKeys([...apiKeys, response.data.apiKey as any]);
+			if (data) {
+				setApiKeys([...apiKeys, data.apiKey as any]);
 				setNewKeyName("");
 				setNewKeyExpiresAt(null);
 				setCreateModalOpen(false);
+			}
+			if (error) {
+				setError("Failed to create API key");
 			}
 		} catch (err) {
 			setError("Failed to create API key");
@@ -119,17 +127,22 @@ function DashboardApikeyComponent() {
 				setError("API key ID is required");
 				return;
 			}
-			const response = await apiClient.api.apikey.update.post({
-				id,
-				isActive: !currentStatus,
+			const { data, error } = await apiClient.POST("/api/apikey/update", {
+				body: {
+					id,
+					isActive: !currentStatus,
+				},
 			});
 
-			if (response.data) {
+			if (data) {
 				setApiKeys(
 					apiKeys.map((key) =>
 						key.id === id ? { ...key, isActive: !currentStatus } : key,
 					),
 				);
+			}
+			if (error) {
+				setError("Failed to update API key status");
 			}
 		} catch (err) {
 			setError("Failed to update API key status");
@@ -147,12 +160,18 @@ function DashboardApikeyComponent() {
 		if (!keyToDelete) return;
 
 		try {
-			await apiClient.api.apikey.delete.post({
-				id: keyToDelete,
+			const { error } = await apiClient.POST("/api/apikey/delete", {
+				body: {
+					id: keyToDelete,
+				},
 			});
-			setApiKeys(apiKeys.filter((key: ApiKey) => key.id !== keyToDelete));
-			setDeleteModalOpen(false);
-			setKeyToDelete(null);
+			if (!error) {
+				setApiKeys(apiKeys.filter((key: ApiKey) => key.id !== keyToDelete));
+				setDeleteModalOpen(false);
+				setKeyToDelete(null);
+			} else {
+				setError("Failed to delete API key");
+			}
 		} catch (err) {
 			setError("Failed to delete API key");
 			console.error(err);

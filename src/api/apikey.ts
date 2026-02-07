@@ -45,6 +45,23 @@ export const apikey = new Elysia({
 			}
 		},
 		{
+			response: {
+				200: t.Object({
+					apiKeys: t.Array(
+						t.Object({
+							id: t.String(),
+							name: t.String(),
+							key: t.String(),
+							isActive: t.Boolean(),
+							expiresAt: t.Union([t.String(), t.Null(), t.Any()]),
+							createdAt: t.Any(),
+							updatedAt: t.Any(),
+						}),
+					),
+				}),
+				401: t.Object({ error: t.String() }),
+				500: t.Object({ error: t.String() }),
+			},
 			detail: {
 				summary: "Get all API keys",
 				description: "Get all API keys",
@@ -97,6 +114,21 @@ export const apikey = new Elysia({
 				name: t.String(),
 				expiresAt: t.Optional(t.String()), // ISO date string
 			}),
+			response: {
+				200: t.Object({
+					apiKey: t.Object({
+						id: t.String(),
+						name: t.String(),
+						key: t.String(),
+						isActive: t.Boolean(),
+						expiresAt: t.Union([t.String(), t.Null(), t.Any()]),
+						createdAt: t.Any(),
+						updatedAt: t.Any(),
+					}),
+				}),
+				401: t.Object({ error: t.String() }),
+				500: t.Object({ error: t.String() }),
+			},
 			detail: {
 				summary: "Create a new API key",
 				description: "Create a new API key",
@@ -174,6 +206,22 @@ export const apikey = new Elysia({
 				isActive: t.Boolean(),
 				expiresAt: t.Optional(t.Union([t.String(), t.Null()])), // ISO date string or null
 			}),
+			response: {
+				200: t.Object({
+					apiKey: t.Object({
+						id: t.String(),
+						name: t.String(),
+						key: t.String(),
+						isActive: t.Boolean(),
+						expiresAt: t.Union([t.String(), t.Null(), t.Any()]),
+						createdAt: t.Any(),
+						updatedAt: t.Any(),
+					}),
+				}),
+				401: t.Object({ error: t.String() }),
+				403: t.Object({ error: t.String() }),
+				500: t.Object({ error: t.String() }),
+			},
 			detail: {
 				summary: "Update an API key",
 				description: "Update an API key",
@@ -225,6 +273,14 @@ export const apikey = new Elysia({
 			body: t.Object({
 				id: t.String(),
 			}),
+			response: {
+				200: t.Object({
+					success: t.Boolean(),
+				}),
+				500: t.Object({ error: t.String() }),
+				403: t.Object({ error: t.String() }),
+				401: t.Object({ error: t.String() }),
+			},
 			detail: {
 				summary: "Delete an API key",
 				description: "Delete an API key",

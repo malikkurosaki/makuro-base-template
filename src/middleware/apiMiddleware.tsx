@@ -86,6 +86,11 @@ export function apiMiddleware(app: Elysia) {
 			}
 		})
 		.onBeforeHandle(({ user, set, request }) => {
+			const url = new URL(request.url);
+			if (url.pathname.startsWith("/api/docs")) {
+				return;
+			}
+
 			if (!user) {
 				logger.warn(`[AUTH] Unauthorized: ${request.method} ${request.url}`);
 				set.status = 401;

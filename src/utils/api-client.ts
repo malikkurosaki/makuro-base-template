@@ -1,5 +1,5 @@
-import { edenTreaty } from "@elysiajs/eden";
-import type { ApiApp } from "../index";
+import createClient from "openapi-fetch";
+import type { paths } from "../../generated/api";
 import { VITE_PUBLIC_URL } from "./env";
 
 const baseUrl =
@@ -8,4 +8,7 @@ const baseUrl =
 		? window.location.origin
 		: "http://localhost:3000");
 
-export const apiClient = edenTreaty<ApiApp>(baseUrl);
+export const apiClient = createClient<paths>({
+	baseUrl: baseUrl,
+	credentials: "include",
+});
