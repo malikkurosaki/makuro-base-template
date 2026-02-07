@@ -1,5 +1,4 @@
 import {
-	ActionIcon,
 	AppShell,
 	Avatar,
 	Box,
@@ -31,8 +30,8 @@ import {
 	useNavigate,
 } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
-import { authStore } from "../../store/auth";
 import { authClient } from "@/utils/auth-client";
+import { authStore } from "../../store/auth";
 
 export const Route = createFileRoute("/dashboard")({
 	component: DashboardLayout,

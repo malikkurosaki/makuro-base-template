@@ -1,9 +1,9 @@
 // open-in-editor.ts
 // DEV utility: open source file in local editor
 
-import { spawn } from "child_process";
-import fs from "fs";
-import path from "path";
+import { spawn } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 
 /* -------------------------------------------------------
  * Types

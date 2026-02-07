@@ -8,12 +8,12 @@
 /** biome-ignore-all lint/suspicious/noAssignInExpressions: <explanation */
 
 import { createTheme, MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { Inspector } from "react-dev-inspector";
 import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
-import { ModalsProvider } from "@mantine/modals";
-import { VITE_PUBLIC_URL, IS_DEV } from "./utils/env";
+import { IS_DEV, VITE_PUBLIC_URL } from "./utils/env";
 
 // Create a new router instance
 export const router = createRouter({
@@ -40,12 +40,11 @@ const elem = document.getElementById("root")!;
 const app = (
 	<InspectorWrapper
 		keys={["shift", "a"]}
-		    onClickElement={(e) => {
-		      if (!e.codeInfo) return;
-		
-		      const url = VITE_PUBLIC_URL;
-		      fetch(`${url}/__open-in-editor`, {
-		
+		onClickElement={(e) => {
+			if (!e.codeInfo) return;
+
+			const url = VITE_PUBLIC_URL;
+			fetch(`${url}/__open-in-editor`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

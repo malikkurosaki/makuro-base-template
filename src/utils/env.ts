@@ -5,7 +5,7 @@
 export const getEnv = (key: string, defaultValue = ""): string => {
 	// 1. Try Vite's import.meta.env
 	try {
-		if (typeof import.meta.env !== "undefined" && import.meta.env[key]) {
+		if (import.meta.env?.[key]) {
 			return import.meta.env[key];
 		}
 	} catch {}
@@ -20,11 +20,14 @@ export const getEnv = (key: string, defaultValue = ""): string => {
 	return defaultValue;
 };
 
-export const VITE_PUBLIC_URL = getEnv("VITE_PUBLIC_URL", "http://localhost:3000");
+export const VITE_PUBLIC_URL = getEnv(
+	"VITE_PUBLIC_URL",
+	"http://localhost:3000",
+);
 
 export const IS_DEV = (() => {
 	try {
-		return typeof import.meta.env !== "undefined" && import.meta.env.DEV;
+		return import.meta.env?.DEV;
 	} catch {
 		return false;
 	}

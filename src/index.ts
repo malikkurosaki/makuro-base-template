@@ -1,41 +1,12 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: penjelasannya */
+
 import fs from "node:fs";
 import path from "node:path";
-import { cors } from "@elysiajs/cors";
-import { swagger } from "@elysiajs/swagger";
 import { Elysia } from "elysia";
-import { apikey } from "./api/apikey";
-import { apiMiddleware } from "./middleware/apiMiddleware";
-import { auth } from "./utils/auth";
+import api from "./api";
 import { openInEditor } from "./utils/open-in-editor";
 
 const isProduction = process.env.NODE_ENV === "production";
-
-const api = new Elysia({
-	prefix: "/api",
-})
-	.use(cors())
-	.all("/auth/*", ({ request }) => auth.handler(request))
-	.get("/session", async ({ request }) => {
-		const data = await auth.api.getSession({ headers: request.headers });
-		return { data };
-	})
-	.use(apiMiddleware)
-	.use(apikey);
-
-if (!isProduction) {
-	api.use(
-		swagger({
-			path: "/docs",
-			documentation: {
-				info: {
-					title: "Bun + React API",
-					version: "1.0.0",
-				},
-			},
-		}),
-	);
-}
 
 const app = new Elysia().use(api);
 
@@ -158,8 +129,11 @@ if (!isProduction) {
 		const pathname = url.pathname;
 
 		// 1. Try exact match in dist
-		let filePath = path.join("dist", pathname === "/" ? "index.html" : pathname);
-		
+		let filePath = path.join(
+			"dist",
+			pathname === "/" ? "index.html" : pathname,
+		);
+
 		// 2. If not found and looks like an asset (has extension), try root of dist
 		if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
 			if (pathname.includes(".") && !pathname.endsWith("/")) {
