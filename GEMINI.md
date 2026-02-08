@@ -26,10 +26,19 @@ This project is **makuro-base-template**, a high-performance, full-stack React d
 *   **Build Frontend**: `bun run build` (Outputs to `dist/`)
 *   **Start Production Server**: `bun run start` (Serves pre-built assets from `dist/` via Elysia)
 
-### Quality Control
+### Quality Control (Testing & Linting)
+*   **Backend Tests**: `bun run test` (Runs Bun's native test runner for `__tests__/api`)
+*   **E2E Tests**: `bun run test:e2e` (Runs Playwright browser tests for `__tests__/e2e`)
 *   **Lint**: `bun run lint` (Biome check)
 *   **Format**: `bun run format` (Biome write)
 *   **Type Check**: `bun x tsc --noEmit`
+
+## Testing Architecture
+
+The project uses two main categories for testing, consolidated in the `__tests__/` directory:
+
+1.  **API Testing (`__tests__/api/`)**: Uses **Bun's native test runner**. Covers unit tests for utilities, database integration, and Elysia API endpoint verification using `api.handle()`.
+2.  **E2E Testing (`__tests__/e2e/`)**: Uses **Playwright**. Covers end-to-end browser workflows like Login, Signup, and Dashboard interactions. Configured to run against the production build for maximum speed and accuracy.
 
 ## Development Conventions
 
@@ -64,5 +73,6 @@ This project is **makuro-base-template**, a high-performance, full-stack React d
 *   `src/utils/`: Shared utilities (Auth, DB, Env, API Client).
 *   `scripts/`: Automation scripts (e.g., `generate-schema.ts`).
 *   `generated/`: Auto-generated artifacts (OpenAPI schema and types).
+*   `__tests__/`: Centralized testing directory (`api/` and `e2e/`).
 *   `prisma/`: Database schema and migrations.
 *   `dist/`: Production build output.
