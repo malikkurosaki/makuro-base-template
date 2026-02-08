@@ -7,6 +7,7 @@ This project is **makuro-base-template**, a high-performance, full-stack React d
 *   **Runtime**: [Bun](https://bun.sh/)
 *   **Architecture**: "Single Port" (default: 3000). [ElysiaJS](https://elysiajs.com/) serves as the main HTTP server, integrating [Vite](https://vitejs.dev/) in **middleware mode** during development to provide HMR and React Dev Inspector support.
 *   **API Design**: **Contract-First (OpenAPI)**. The frontend uses `openapi-fetch` with types generated from the backend's OpenAPI schema, ensuring a decoupled but type-safe connection.
+*   **Mobile Readiness**: **PWA (Progressive Web App)** & **TWA (Trusted Web Activity)**. Built-in support for offline caching and Android app packaging.
 *   **Frontend**: React 19 with [TanStack React Router](https://tanstack.com/router/latest) for type-safe, file-based routing.
 *   **UI Framework**: [Mantine UI](https://mantine.dev/) for a comprehensive component library and hooks.
 *   **Authentication**: [Better Auth](https://www.better-auth.com/) integrated with Elysia.
@@ -54,6 +55,12 @@ The project uses two main categories for testing, consolidated in the `__tests__
 *   **Sync**: Run `bun run gen:api` to export the OpenAPI `schema.json` and generate TypeScript types in `generated/api.ts`.
 *   **Frontend Usage**: Use the `apiClient` from `@/utils/api-client`, which uses `openapi-fetch` for type-safe requests.
 
+### Mobile & PWA
+*   **Manifest**: Metadata is located in `src/manifest.json`.
+*   **Service Worker**: Offline logic is in `src/sw.js`. It uses a "Cache First" strategy.
+*   **TWA Verification**: The Android ownership file is at `src/.well-known/assetlinks.json`.
+*   **Server Logic**: Elysia is configured to remove `Vary: *` headers for these static assets to ensure Cache Storage API compatibility.
+
 ### Backend/API
 *   **Prefix**: All backend API routes are prefixed with `/api`.
 *   **Documentation**: Swagger/OpenAPI documentation is available at `/api/docs` in development.
@@ -71,6 +78,9 @@ The project uses two main categories for testing, consolidated in the `__tests__
 *   `src/api/`: Elysia route modules and schema definitions.
 *   `src/routes/`: Frontend route definitions and layouts.
 *   `src/utils/`: Shared utilities (Auth, DB, Env, API Client).
+*   `src/sw.js`: PWA Service Worker.
+*   `src/manifest.json`: PWA Manifest.
+*   `src/.well-known/`: TWA verification assets.
 *   `scripts/`: Automation scripts (e.g., `generate-schema.ts`).
 *   `generated/`: Auto-generated artifacts (OpenAPI schema and types).
 *   `__tests__/`: Centralized testing directory (`api/` and `e2e/`).

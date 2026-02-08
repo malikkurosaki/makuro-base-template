@@ -15,6 +15,13 @@ if (!isProduction) {
 	const { createVite } = await import("./vite");
 	const vite = await createVite();
 
+	// Serve PWA/TWA assets in dev
+	app.get("/manifest.json", () => Bun.file("src/manifest.json"));
+	app.get("/sw.js", () => Bun.file("src/sw.js"));
+	app.get("/.well-known/assetlinks.json", () =>
+		Bun.file("src/.well-known/assetlinks.json"),
+	);
+
 	app.post("/__open-in-editor", ({ body }) => {
 		const { relativePath, lineNumber, columnNumber } = body as {
 			relativePath: string;
@@ -42,7 +49,10 @@ if (!isProduction) {
 			(!pathname.includes(".") &&
 				!pathname.startsWith("/@") &&
 				!pathname.startsWith("/inspector") &&
-				!pathname.startsWith("/__open-stack-frame-in-editor"))
+				!pathname.startsWith("/__open-stack-frame-in-editor") &&
+				!pathname.startsWith("/manifest.json") &&
+				!pathname.startsWith("/sw.js") &&
+				!pathname.startsWith("/.well-known/"))
 		) {
 			try {
 				const htmlPath = path.resolve("src/index.html");
@@ -134,6 +144,18 @@ if (!isProduction) {
 			pathname === "/" ? "index.html" : pathname,
 		);
 
+		// 1.1 Special handling for PWA/TWA assets that might not be in dist (since we use custom bun build)
+		if (
+			pathname === "/manifest.json" ||
+			pathname === "/sw.js" ||
+			pathname === "/.well-known/assetlinks.json"
+		) {
+			const srcPath = path.join("src", pathname);
+			if (fs.existsSync(srcPath)) {
+				filePath = srcPath;
+			}
+		}
+
 		// 2. If not found and looks like an asset (has extension), try root of dist
 		if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
 			if (pathname.includes(".") && !pathname.endsWith("/")) {
@@ -146,13 +168,22 @@ if (!isProduction) {
 		}
 
 		if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-			return new Response(Bun.file(filePath));
+			const file = Bun.file(filePath);
+			return new Response(file, {
+				headers: {
+					"Vary": "Accept-Encoding",
+				}
+			});
 		}
 
 		// 3. SPA Fallback: Serve index.html
 		const indexHtml = path.join("dist", "index.html");
 		if (fs.existsSync(indexHtml)) {
-			return new Response(Bun.file(indexHtml));
+			return new Response(Bun.file(indexHtml), {
+				headers: {
+					"Vary": "Accept-Encoding",
+				}
+			});
 		}
 
 		return new Response("Not Found", { status: 404 });
