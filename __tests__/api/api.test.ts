@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import api from "../src/api";
+import { describe, expect, it } from "bun:test";
+import api from "@/api";
 
 describe("API Integration", () => {
 	it("should return 200 for health check", async () => {
@@ -25,6 +25,17 @@ describe("API Integration", () => {
 			new Request("http://localhost/api/apikey/"),
 		);
 		// 401 is intended, 422 is returned by Elysia when the error response doesn't match the schema
+		expect([401, 422]).toContain(response.status);
+	});
+
+	it("should return 401 for profile update without auth", async () => {
+		const response = await api.handle(
+			new Request("http://localhost/api/profile/update", {
+				method: "POST",
+				body: JSON.stringify({ name: "New Name" }),
+				headers: { "Content-Type": "application/json" },
+			}),
+		);
 		expect([401, 422]).toContain(response.status);
 	});
 });

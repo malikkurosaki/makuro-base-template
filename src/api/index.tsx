@@ -4,6 +4,7 @@ import Elysia from "elysia";
 import { apiMiddleware } from "../middleware/apiMiddleware";
 import { auth } from "../utils/auth";
 import { apikey } from "./apikey";
+import { profile } from "./profile";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -18,7 +19,8 @@ const api = new Elysia({
 		return { data };
 	})
 	.use(apiMiddleware)
-	.use(apikey);
+	.use(apikey)
+	.use(profile);
 
 if (!isProduction) {
 	api.use(

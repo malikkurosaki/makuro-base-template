@@ -17,12 +17,14 @@ import {
 	Title,
 	Tooltip,
 } from "@mantine/core";
+
 import { modals } from "@mantine/modals";
 import {
 	IconAt,
 	IconCheck,
 	IconCopy,
 	IconDashboard,
+	IconEdit,
 	IconExternalLink,
 	IconId,
 	IconLogout,
@@ -34,9 +36,9 @@ import { useState } from "react";
 import { useSnapshot } from "valtio";
 import { protectedRouteMiddleware } from "@/middleware/authMiddleware";
 import { authClient } from "@/utils/auth-client";
-import { authStore } from "../store/auth";
+import { authStore } from "../../store/auth";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/profile/")({
 	component: Profile,
 	beforeLoad: protectedRouteMiddleware,
 	onEnter({ context }) {
@@ -161,6 +163,14 @@ function Profile() {
 								Admin Panel
 							</Button>
 						)}
+						<Button
+							variant="light"
+							color="blue"
+							leftSection={<IconEdit size={18} />}
+							onClick={() => navigate({ to: "/profile/edit" })}
+						>
+							Edit Profil
+						</Button>
 						<Button
 							variant="outline"
 							color="red"

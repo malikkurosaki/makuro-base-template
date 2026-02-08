@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { prisma } from "../src/utils/db";
+import { describe, expect, it } from "bun:test";
+import { prisma } from "@/utils/db";
 
 describe("Database Integration", () => {
 	it("should connect to the database and query users", async () => {

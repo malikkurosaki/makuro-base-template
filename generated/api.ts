@@ -4,6 +4,22 @@
  */
 
 export interface paths {
+    "/api/health": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiHealth"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/session": {
         parameters: {
             query?: never;
@@ -84,6 +100,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/profile/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Update user profile
+         * @description Update the authenticated user's name or profile image
+         */
+        post: operations["postApiProfileUpdate"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -96,6 +132,23 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    getApiHealth: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     getApiSession: {
         parameters: {
             query?: never;
@@ -465,6 +518,98 @@ export interface operations {
                 };
             };
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                    "multipart/form-data": {
+                        error: string;
+                    };
+                    "text/plain": {
+                        error: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        error: string;
+                    };
+                    "multipart/form-data": {
+                        error: string;
+                    };
+                    "text/plain": {
+                        error: string;
+                    };
+                };
+            };
+        };
+    };
+    postApiProfileUpdate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name?: string;
+                    image?: string;
+                };
+                "multipart/form-data": {
+                    name?: string;
+                    image?: string;
+                };
+                "text/plain": {
+                    name?: string;
+                    image?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        user: {
+                            id: string;
+                            name: unknown;
+                            email: string;
+                            image: unknown;
+                            role: unknown;
+                        };
+                    };
+                    "multipart/form-data": {
+                        user: {
+                            id: string;
+                            name: unknown;
+                            email: string;
+                            image: unknown;
+                            role: unknown;
+                        };
+                    };
+                    "text/plain": {
+                        user: {
+                            id: string;
+                            name: unknown;
+                            email: string;
+                            image: unknown;
+                            role: unknown;
+                        };
+                    };
+                };
+            };
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

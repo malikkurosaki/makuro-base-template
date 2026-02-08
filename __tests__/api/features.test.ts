@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { getEnv } from "../src/utils/env";
+import { describe, expect, it } from "bun:test";
+import { getEnv } from "@/utils/env";
 
 describe("Feature Utilities", () => {
 	describe("getEnv Utility", () => {
@@ -10,13 +10,14 @@ describe("Feature Utilities", () => {
 
 		it("should return value from process.env if available", () => {
 			// Mock process.env
-			const originalEnv = process.env;
-			process.env = { ...originalEnv, TEST_ENV_KEY: "test-value" };
+			const originalEnv = { ...process.env };
+			process.env.TEST_ENV_KEY = "test-value";
 
 			const val = getEnv("TEST_ENV_KEY");
 			expect(val).toBe("test-value");
 
-			process.env = originalEnv;
+			// Clean up
+			delete process.env.TEST_ENV_KEY;
 		});
 	});
 });
