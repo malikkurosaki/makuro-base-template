@@ -21,7 +21,10 @@ if (!isProduction) {
 	app.get("**/manifest.json", servePwaAsset("src/manifest.json"));
 	app.get("/sw.js", servePwaAsset("src/sw.js"));
 	app.get("**/sw.js", servePwaAsset("src/sw.js"));
-	app.get("/.well-known/assetlinks.json", servePwaAsset("src/.well-known/assetlinks.json"));
+	app.get(
+		"/.well-known/assetlinks.json",
+		servePwaAsset("src/.well-known/assetlinks.json"),
+	);
 
 	app.post("/__open-in-editor", ({ body }) => {
 		const { relativePath, lineNumber, columnNumber } = body as {
@@ -161,17 +164,29 @@ if (!isProduction) {
 		if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
 			if (pathname.includes(".") && !pathname.endsWith("/")) {
 				const filename = path.basename(pathname);
-				
+
 				// Try root of dist
 				const fallbackDistPath = path.join("dist", filename);
-				if (fs.existsSync(fallbackDistPath) && fs.statSync(fallbackDistPath).isFile()) {
+				if (
+					fs.existsSync(fallbackDistPath) &&
+					fs.statSync(fallbackDistPath).isFile()
+				) {
 					filePath = fallbackDistPath;
-				} 
+				}
 				// Special handling for PWA files in src
-				else if (filename === "manifest.json" || filename === "sw.js" || pathname.includes("assetlinks.json")) {
-					const srcFilename = pathname.includes("assetlinks.json") ? ".well-known/assetlinks.json" : filename;
+				else if (
+					filename === "manifest.json" ||
+					filename === "sw.js" ||
+					pathname.includes("assetlinks.json")
+				) {
+					const srcFilename = pathname.includes("assetlinks.json")
+						? ".well-known/assetlinks.json"
+						: filename;
 					const fallbackSrcPath = path.join("src", srcFilename);
-					if (fs.existsSync(fallbackSrcPath) && fs.statSync(fallbackSrcPath).isFile()) {
+					if (
+						fs.existsSync(fallbackSrcPath) &&
+						fs.statSync(fallbackSrcPath).isFile()
+					) {
 						filePath = fallbackSrcPath;
 					}
 				}

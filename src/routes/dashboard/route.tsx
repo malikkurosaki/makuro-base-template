@@ -31,11 +31,17 @@ import {
 } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
 import { ColorSchemeToggle } from "@/components/ColorSchemeToggle";
+import { protectedRouteMiddleware } from "@/middleware/authMiddleware";
 import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
 
 export const Route = createFileRoute("/dashboard")({
 	component: DashboardLayout,
+	beforeLoad: protectedRouteMiddleware,
+	onEnter({ context }) {
+		authStore.user = context?.user as any;
+		authStore.session = context?.session as any;
+	},
 });
 
 function DashboardLayout() {
