@@ -56,7 +56,7 @@ function DashboardComponent() {
 
 	return (
 		<Container size="lg" py="xl">
-			<Title order={1} mb="lg" ta="center">
+			<Title order={1} ta="center" className=" text-blue-600 p-4 rounded-lg mt-10 shadow-lg">
 				Dashboard Overview
 			</Title>
 
