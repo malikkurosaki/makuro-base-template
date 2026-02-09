@@ -56,7 +56,7 @@ const app = (
 			});
 		}}
 	>
-		<MantineProvider theme={theme}>
+		<MantineProvider theme={theme} defaultColorScheme="dark">
 			<ModalsProvider>
 				<RouterProvider router={router} />
 			</ModalsProvider>

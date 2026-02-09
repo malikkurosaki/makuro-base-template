@@ -171,8 +171,8 @@ if (!isProduction) {
 			const file = Bun.file(filePath);
 			return new Response(file, {
 				headers: {
-					"Vary": "Accept-Encoding",
-				}
+					Vary: "Accept-Encoding",
+				},
 			});
 		}
 
@@ -181,8 +181,8 @@ if (!isProduction) {
 		if (fs.existsSync(indexHtml)) {
 			return new Response(Bun.file(indexHtml), {
 				headers: {
-					"Vary": "Accept-Encoding",
-				}
+					Vary: "Accept-Encoding",
+				},
 			});
 		}
 

@@ -30,6 +30,7 @@ import {
 	useNavigate,
 } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
+import { ColorSchemeToggle } from "@/components/ColorSchemeToggle";
 import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
 
@@ -101,7 +102,9 @@ function DashboardLayout() {
 			header={{ height: 70 }}
 			navbar={{
 				width: 280,
+
 				breakpoint: "sm",
+
 				collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
 			}}
 			padding="md"
@@ -109,10 +112,10 @@ function DashboardLayout() {
 			transitionTimingFunction="ease"
 		>
 			<AppShell.Header
-				bg="rgba(26, 26, 26, 0.8)"
 				style={{
 					backdropFilter: "blur(10px)",
-					borderBottom: "1px solid rgba(251, 240, 223, 0.1)",
+
+					borderBottom: "1px solid var(--mantine-color-default-border)",
 				}}
 			>
 				<Group h="100%" px="md" justify="space-between">
@@ -122,24 +125,24 @@ function DashboardLayout() {
 							onClick={toggleMobile}
 							hiddenFrom="sm"
 							size="sm"
-							color="#f3d5a3"
 						/>
+
 						<Burger
 							opened={desktopOpened}
 							onClick={toggleDesktop}
 							visibleFrom="sm"
 							size="sm"
-							color="#f3d5a3"
 						/>
+
 						<Box visibleFrom="xs" ml="xs">
 							<Text
 								fw={800}
 								size="xl"
-								c="#f3d5a3"
+								c="orange.6"
 								style={{ letterSpacing: "-0.5px" }}
 							>
 								ADMIN
-								<Text span c="#fbf0df">
+								<Text span c="var(--mantine-color-text)">
 									PANEL
 								</Text>
 							</Text>
@@ -147,6 +150,8 @@ function DashboardLayout() {
 					</Group>
 
 					<Group gap="md">
+						<ColorSchemeToggle />
+
 						<Menu
 							shadow="md"
 							width={200}
@@ -158,24 +163,28 @@ function DashboardLayout() {
 									gap="xs"
 									style={{ cursor: "pointer" }}
 									p="xs"
-									hover-bg="rgba(255,255,255,0.05)"
+									className="hover:bg-gray-50 dark:hover:bg-white/5 rounded-md"
 								>
 									<div
 										style={{ textAlign: "right" }}
 										className="visible-from-sm"
 									>
-										<Text size="sm" fw={600} c="#fbf0df">
+										<Text size="sm" fw={600}>
 											{snap.user?.name}
 										</Text>
+
 										<Text size="xs" c="dimmed">
 											Administrator
 										</Text>
 									</div>
+
 									<Avatar
 										src={snap.user?.image}
 										radius="xl"
 										size="md"
-										style={{ border: "2px solid #f3d5a3" }}
+										style={{
+											border: "2px solid var(--mantine-color-orange-filled)",
+										}}
 									>
 										{snap.user?.name?.charAt(0)}
 									</Avatar>
@@ -184,6 +193,7 @@ function DashboardLayout() {
 
 							<Menu.Dropdown>
 								<Menu.Label>Akun</Menu.Label>
+
 								<Menu.Item
 									leftSection={
 										<IconUser style={{ width: rem(14), height: rem(14) }} />
@@ -192,6 +202,7 @@ function DashboardLayout() {
 								>
 									Profil Saya
 								</Menu.Item>
+
 								<Menu.Item
 									leftSection={
 										<IconSettings style={{ width: rem(14), height: rem(14) }} />
@@ -204,6 +215,7 @@ function DashboardLayout() {
 								<Menu.Divider />
 
 								<Menu.Label>Bahaya</Menu.Label>
+
 								<Menu.Item
 									color="red"
 									leftSection={
@@ -221,8 +233,7 @@ function DashboardLayout() {
 
 			<AppShell.Navbar
 				p="md"
-				bg="rgba(20, 20, 20, 1)"
-				style={{ borderRight: "1px solid rgba(251, 240, 223, 0.1)" }}
+				style={{ borderRight: "1px solid var(--mantine-color-default-border)" }}
 			>
 				<AppShell.Section grow component={ScrollArea} mx="-md" px="md">
 					<Stack gap="xs" mt="md">
@@ -237,6 +248,7 @@ function DashboardLayout() {
 								<NavLink
 									onClick={() => {
 										navigate({ to: item.to });
+
 										if (mobileOpened) toggleMobile();
 									}}
 									leftSection={
@@ -254,20 +266,15 @@ function DashboardLayout() {
 									}
 									rightSection={<IconChevronRight size="0.8rem" stroke={1.5} />}
 									active={isActive(item.to)}
-									variant="filled"
+									variant="light"
 									color="orange"
 									styles={{
 										root: {
 											borderRadius: rem(8),
+
 											marginBottom: rem(4),
-											backgroundColor: isActive(item.to)
-												? "rgba(243, 213, 163, 0.1)"
-												: "transparent",
-											color: isActive(item.to) ? "#f3d5a3" : "#fbf0df",
-											"&:hover": {
-												backgroundColor: "rgba(243, 213, 163, 0.05)",
-											},
 										},
+
 										label: {
 											fontSize: rem(14),
 										},
@@ -279,7 +286,7 @@ function DashboardLayout() {
 				</AppShell.Section>
 
 				<AppShell.Section
-					style={{ borderTop: "1px solid rgba(251, 240, 223, 0.1)" }}
+					style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
 					pt="md"
 				>
 					<NavLink
@@ -292,6 +299,7 @@ function DashboardLayout() {
 						}
 						styles={{ root: { borderRadius: rem(8) } }}
 					/>
+
 					<NavLink
 						label="Keluar"
 						onClick={handleLogout}
@@ -308,7 +316,7 @@ function DashboardLayout() {
 				</AppShell.Section>
 			</AppShell.Navbar>
 
-			<AppShell.Main bg="rgba(15, 15, 15, 1)">
+			<AppShell.Main>
 				<Box p="lg" style={{ minHeight: "calc(100vh - 100px)" }}>
 					<Outlet />
 				</Box>

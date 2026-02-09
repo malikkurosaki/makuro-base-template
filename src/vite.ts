@@ -1,7 +1,7 @@
 import path from "node:path";
 import { inspectorServer } from "@react-dev-inspector/vite-plugin";
-import { tanstackRouter } from "@tanstack/router-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackRouter } from "@tanstack/router-vite-plugin";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 
@@ -36,7 +36,13 @@ export async function createVite() {
 		},
 		appType: "custom",
 		optimizeDeps: {
-			include: ["react", "react-dom", "@mantine/core", "manifest.json", "sw.js"],
+			include: [
+				"react",
+				"react-dom",
+				"@mantine/core",
+				"manifest.json",
+				"sw.js",
+			],
 		},
 	});
 }

@@ -34,6 +34,7 @@ import {
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useSnapshot } from "valtio";
+import { ColorSchemeToggle } from "@/components/ColorSchemeToggle";
 import { protectedRouteMiddleware } from "@/middleware/authMiddleware";
 import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
@@ -92,25 +93,22 @@ function Profile() {
 			withBorder
 			p="md"
 			radius="md"
-			bg="rgba(251, 240, 223, 0.03)"
-			style={{ border: "1px solid rgba(251, 240, 223, 0.1)" }}
+			style={{ border: "1px solid var(--mantine-color-default-border)" }}
 		>
 			<Group wrap="nowrap" align="flex-start">
 				<Box mt={3}>
-					<Icon size={20} stroke={1.5} color="#f3d5a3" />
+					<Icon
+						size={20}
+						stroke={1.5}
+						color="var(--mantine-color-orange-filled)"
+					/>
 				</Box>
 				<Box style={{ flex: 1 }}>
 					<Text size="xs" c="dimmed" tt="uppercase" fw={700} lts={0.5}>
 						{label}
 					</Text>
 					<Group gap="xs" mt={4} wrap="nowrap">
-						<Text
-							fw={500}
-							size="sm"
-							c="#fbf0df"
-							truncate="end"
-							style={{ flex: 1 }}
-						>
+						<Text fw={500} size="sm" truncate="end" style={{ flex: 1 }}>
 							{value || "N/A"}
 						</Text>
 						{copyable && value && (
@@ -145,7 +143,7 @@ function Profile() {
 				{/* Header Section */}
 				<Group justify="space-between" align="center">
 					<Box>
-						<Title order={1} c="#f3d5a3">
+						<Title order={1} c="orange.6">
 							Profil Saya
 						</Title>
 						<Text c="dimmed" size="sm">
@@ -153,6 +151,7 @@ function Profile() {
 						</Text>
 					</Box>
 					<Group>
+						<ColorSchemeToggle />
 						{snap.user?.role === "admin" && (
 							<Button
 								variant="light"
@@ -182,20 +181,17 @@ function Profile() {
 					</Group>
 				</Group>
 
-				<Divider color="rgba(251, 240, 223, 0.1)" />
+				<Divider style={{ opacity: 0.1 }} />
 
 				{/* Profile Overview Card */}
-				<Card
-					withBorder
-					radius="lg"
-					p={0}
-					bg="rgba(26, 26, 26, 0.5)"
-					style={{ overflow: "hidden" }}
-				>
+				<Card withBorder radius="lg" p={0} style={{ overflow: "hidden" }}>
 					<Box
 						h={120}
-						bg="linear-gradient(45deg, #2c2c2c 0%, #1a1a1a 100%)"
-						style={{ borderBottom: "1px solid rgba(251, 240, 223, 0.1)" }}
+						style={{
+							background:
+								"linear-gradient(45deg, var(--mantine-color-gray-filled) 0%, var(--mantine-color-dark-filled) 100%)",
+							borderBottom: "1px solid var(--mantine-color-default-border)",
+						}}
 					/>
 					<Box px="xl" pb="xl" style={{ marginTop: rem(-60) }}>
 						<Group align="flex-end" gap="xl" mb="md">
@@ -204,16 +200,14 @@ function Profile() {
 								size={120}
 								radius={120}
 								style={{
-									border: "4px solid #1a1a1a",
-									boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+									border: "4px solid var(--mantine-color-body)",
+									boxShadow: "var(--mantine-shadow-md)",
 								}}
 							>
 								{snap.user?.name?.charAt(0).toUpperCase()}
 							</Avatar>
 							<Stack gap={0} pb="md">
-								<Title order={2} c="#fbf0df">
-									{snap.user?.name}
-								</Title>
+								<Title order={2}>{snap.user?.name}</Title>
 								<Group gap="xs">
 									<Text c="dimmed" size="sm">
 										{snap.user?.email}
@@ -237,7 +231,7 @@ function Profile() {
 				<Grid gutter="lg">
 					<Grid.Col span={{ base: 12, md: 7 }}>
 						<Stack gap="md">
-							<Title order={4} c="#f3d5a3">
+							<Title order={4} c="orange.6">
 								Informasi Identitas
 							</Title>
 							<Grid gutter="sm">
@@ -279,15 +273,16 @@ function Profile() {
 
 					<Grid.Col span={{ base: 12, md: 5 }}>
 						<Stack gap="md">
-							<Title order={4} c="#f3d5a3">
+							<Title order={4} c="orange.6">
 								Keamanan & Sesi
 							</Title>
 							<Card
 								withBorder
 								radius="md"
 								p="lg"
-								bg="rgba(251, 240, 223, 0.03)"
-								style={{ border: "1px solid rgba(251, 240, 223, 0.1)" }}
+								style={{
+									border: "1px solid var(--mantine-color-default-border)",
+								}}
 							>
 								<Stack gap="md">
 									<Box>
@@ -312,9 +307,6 @@ function Profile() {
 											<Code
 												block
 												style={{
-													backgroundColor: "rgba(0,0,0,0.3)",
-													color: "#f3d5a3",
-													border: "1px solid rgba(251, 240, 223, 0.1)",
 													fontSize: rem(11),
 													flex: 1,
 												}}

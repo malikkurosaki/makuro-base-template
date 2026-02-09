@@ -56,7 +56,11 @@ function DashboardComponent() {
 
 	return (
 		<Container size="lg" py="xl">
-			<Title order={1} ta="center" className=" text-blue-600 p-4 rounded-lg mt-10 shadow-lg">
+			<Title
+				order={1}
+				ta="center"
+				className=" text-blue-600 p-4 rounded-lg mt-10 shadow-lg"
+			>
 				Dashboard Overview
 			</Title>
 
@@ -66,8 +70,7 @@ function DashboardComponent() {
 				p="xl"
 				radius="md"
 				mb="xl"
-				bg="rgba(251, 240, 223, 0.05)"
-				style={{ border: "1px solid rgba(251, 240, 223, 0.1)" }}
+				style={{ border: "1px solid var(--mantine-color-default-border)" }}
 			>
 				<Group justify="space-between">
 					<Group>
@@ -77,14 +80,14 @@ function DashboardComponent() {
 							radius="xl"
 							style={{
 								cursor: "pointer",
-								border: "2px solid rgba(251, 240, 223, 0.3)",
+								border: "2px solid var(--mantine-color-orange-filled)",
 							}}
 							onClick={() => navigate({ to: "/profile" })}
 						>
 							{snap.user?.name?.charAt(0).toUpperCase()}
 						</Avatar>
 						<div>
-							<Text size="lg" fw={600} c="#fbf0df">
+							<Text size="lg" fw={600}>
 								{snap.user?.name}
 							</Text>
 							<Text c="dimmed" size="sm">
@@ -104,23 +107,17 @@ function DashboardComponent() {
 			{/* Stats Grid */}
 			<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg" mb="xl">
 				{statsData.map((stat, index) => (
-					<Card
-						key={index.toString()}
-						withBorder
-						p="lg"
-						radius="md"
-						bg="rgba(251, 240, 223, 0.05)"
-					>
+					<Card key={index.toString()} withBorder p="lg" radius="md">
 						<Group justify="space-between">
 							<Box>
 								<Text size="sm" c="dimmed">
 									{stat.title}
 								</Text>
-								<Text size="lg" fw={700} c="#fbf0df">
+								<Text size="lg" fw={700}>
 									{stat.value}
 								</Text>
 							</Box>
-							<Box c="#f3d5a3">{stat.icon}</Box>
+							<Box c="orange.6">{stat.icon}</Box>
 						</Group>
 					</Card>
 				))}
@@ -128,13 +125,7 @@ function DashboardComponent() {
 
 			<Grid gutter="lg">
 				<Grid.Col span={{ base: 12, md: 8 }}>
-					<Card
-						withBorder
-						p="lg"
-						radius="md"
-						mb="lg"
-						bg="rgba(251, 240, 223, 0.05)"
-					>
+					<Card withBorder p="lg" radius="md" mb="lg">
 						<Title order={3} mb="md">
 							System Performance
 						</Title>
@@ -171,7 +162,7 @@ function DashboardComponent() {
 				</Grid.Col>
 
 				<Grid.Col span={{ base: 12, md: 4 }}>
-					<Card withBorder p="lg" radius="md" bg="rgba(251, 240, 223, 0.05)">
+					<Card withBorder p="lg" radius="md">
 						<Title order={3} mb="md">
 							Server Status
 						</Title>

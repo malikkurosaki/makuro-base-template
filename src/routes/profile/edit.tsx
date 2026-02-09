@@ -71,7 +71,7 @@ function EditProfile() {
 			<Stack gap="xl">
 				<Group justify="space-between" align="center">
 					<Box>
-						<Title order={1} c="#f3d5a3">
+						<Title order={1} c="orange.6">
 							Edit Profil
 						</Title>
 						<Text c="dimmed" size="sm">
@@ -88,14 +88,13 @@ function EditProfile() {
 					</Button>
 				</Group>
 
-				<Divider color="rgba(251, 240, 223, 0.1)" />
+				<Divider style={{ opacity: 0.1 }} />
 
 				<Card
 					withBorder
 					radius="md"
 					p="xl"
-					bg="rgba(26, 26, 26, 0.5)"
-					style={{ border: "1px solid rgba(251, 240, 223, 0.1)" }}
+					style={{ border: "1px solid var(--mantine-color-default-border)" }}
 				>
 					<form onSubmit={form.onSubmit(handleUpdateProfile)}>
 						<Stack gap="md">
@@ -104,10 +103,9 @@ function EditProfile() {
 								placeholder="Masukkan nama lengkap Anda"
 								{...form.getInputProps("name")}
 								styles={{
-									label: { color: "#fbf0df", marginBottom: 8 },
+									label: { marginBottom: 8 },
 									input: {
-										backgroundColor: "rgba(0,0,0,0.2)",
-										color: "#fbf0df",
+										backgroundColor: "var(--mantine-color-default-soft)",
 									},
 								}}
 							/>
@@ -116,10 +114,9 @@ function EditProfile() {
 								placeholder="https://example.com/photo.jpg"
 								{...form.getInputProps("image")}
 								styles={{
-									label: { color: "#fbf0df", marginBottom: 8 },
+									label: { marginBottom: 8 },
 									input: {
-										backgroundColor: "rgba(0,0,0,0.2)",
-										color: "#fbf0df",
+										backgroundColor: "var(--mantine-color-default-soft)",
 									},
 								}}
 							/>
