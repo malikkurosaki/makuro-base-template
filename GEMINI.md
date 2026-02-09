@@ -10,6 +10,7 @@ This project is **makuro-base-template**, a high-performance, full-stack React d
 *   **Mobile Readiness**: **PWA (Progressive Web App)** & **TWA (Trusted Web Activity)**. Built-in support for offline caching and Android app packaging.
 *   **Frontend**: React 19 with [TanStack React Router](https://tanstack.com/router/latest) for type-safe, file-based routing.
 *   **UI Framework**: [Mantine UI](https://mantine.dev/) for a comprehensive component library and hooks.
+*   **UI Primitives**: [Radix UI](https://www.radix-ui.com/) for unstyled, accessible UI components (primitives).
 *   **Authentication**: [Better Auth](https://www.better-auth.com/) integrated with Elysia.
 *   **Database**: [Prisma ORM](https://www.prisma.io/) for type-safe database access.
 *   **Tooling**: [Biome](https://biomejs.dev/) for ultra-fast linting and formatting.

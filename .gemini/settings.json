@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "AfterAgent": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "name": "telegram-notify",
+            "type": "command",
+            "command": "$GEMINI_PROJECT_DIR/.gemini/hooks/telegram-notify.sh",
+            "timeout": 8000
+          }
+        ]
+      }
+    ]
+  }
+}

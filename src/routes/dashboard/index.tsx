@@ -24,6 +24,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
 import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
+import { RadixSample } from "@/components/RadixSample";
 
 export const Route = createFileRoute("/dashboard/")({
 	component: DashboardComponent,
@@ -103,6 +104,8 @@ function DashboardComponent() {
 					</Button>
 				</Group>
 			</Card>
+
+			<RadixSample />
 
 			{/* Stats Grid */}
 			<SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="lg" mb="xl">
