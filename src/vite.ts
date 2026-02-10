@@ -40,8 +40,6 @@ export async function createVite() {
 				"react",
 				"react-dom",
 				"@mantine/core",
-				"manifest.json",
-				"sw.js",
 			],
 		},
 	});

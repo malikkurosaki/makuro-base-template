@@ -15,17 +15,6 @@ if (!isProduction) {
 	const { createVite } = await import("./vite");
 	const vite = await createVite();
 
-	// Serve PWA/TWA assets in dev (root and nested path support)
-	const servePwaAsset = (srcPath: string) => () => Bun.file(srcPath);
-	app.get("/manifest.json", servePwaAsset("src/manifest.json"));
-	app.get("**/manifest.json", servePwaAsset("src/manifest.json"));
-	app.get("/sw.js", servePwaAsset("src/sw.js"));
-	app.get("**/sw.js", servePwaAsset("src/sw.js"));
-	app.get(
-		"/.well-known/assetlinks.json",
-		servePwaAsset("src/.well-known/assetlinks.json"),
-	);
-
 	app.post("/__open-in-editor", ({ body }) => {
 		const { relativePath, lineNumber, columnNumber } = body as {
 			relativePath: string;
@@ -53,10 +42,7 @@ if (!isProduction) {
 			(!pathname.includes(".") &&
 				!pathname.startsWith("/@") &&
 				!pathname.startsWith("/inspector") &&
-				!pathname.startsWith("/__open-stack-frame-in-editor") &&
-				!pathname.startsWith("/manifest.json") &&
-				!pathname.startsWith("/sw.js") &&
-				!pathname.startsWith("/.well-known/"))
+				!pathname.startsWith("/__open-stack-frame-in-editor"))
 		) {
 			try {
 				const htmlPath = path.resolve("src/index.html");
@@ -148,19 +134,7 @@ if (!isProduction) {
 			pathname === "/" ? "index.html" : pathname,
 		);
 
-		// 1.1 Special handling for PWA/TWA assets that might not be in dist (since we use custom bun build)
-		if (
-			pathname === "/manifest.json" ||
-			pathname === "/sw.js" ||
-			pathname === "/.well-known/assetlinks.json"
-		) {
-			const srcPath = path.join("src", pathname);
-			if (fs.existsSync(srcPath)) {
-				filePath = srcPath;
-			}
-		}
-
-		// 2. If not found and looks like an asset (has extension), try root of dist or src
+		// 2. If not found and looks like an asset (has extension), try root of dist
 		if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
 			if (pathname.includes(".") && !pathname.endsWith("/")) {
 				const filename = path.basename(pathname);
@@ -172,23 +146,6 @@ if (!isProduction) {
 					fs.statSync(fallbackDistPath).isFile()
 				) {
 					filePath = fallbackDistPath;
-				}
-				// Special handling for PWA files in src
-				else if (
-					filename === "manifest.json" ||
-					filename === "sw.js" ||
-					pathname.includes("assetlinks.json")
-				) {
-					const srcFilename = pathname.includes("assetlinks.json")
-						? ".well-known/assetlinks.json"
-						: filename;
-					const fallbackSrcPath = path.join("src", srcFilename);
-					if (
-						fs.existsSync(fallbackSrcPath) &&
-						fs.statSync(fallbackSrcPath).isFile()
-					) {
-						filePath = fallbackSrcPath;
-					}
 				}
 			}
 		}
