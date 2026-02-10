@@ -59,12 +59,6 @@ function AdminLayout() {
 			description: "Ringkasan sistem & statistik",
 		},
 		{
-			icon: IconUsers,
-			label: "Pengguna",
-			to: "/admin/users",
-			description: "Kelola akun & hak akses",
-		},
-		{
 			icon: IconKey,
 			label: "API Key",
 			to: "/admin/apikey",
