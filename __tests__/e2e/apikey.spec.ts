@@ -36,7 +36,7 @@ test.describe("API Key Management", () => {
 
 	test("should create, update, and delete an API key", async ({ page }) => {
 		// Go to the API Keys page
-		await page.goto("/dashboard/apikey");
+		await page.goto("/admin/apikey");
 
 		// 1. CREATE
 		await page.click('button:has-text("Create New API Key")');

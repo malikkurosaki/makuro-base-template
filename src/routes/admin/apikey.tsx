@@ -38,9 +38,9 @@ import { useCallback, useEffect, useState } from "react";
 import { protectedRouteMiddleware } from "../../middleware/authMiddleware";
 import { apiClient } from "../../utils/api-client";
 
-export const Route = createFileRoute("/dashboard/apikey")({
+export const Route = createFileRoute("/admin/apikey")({
 	beforeLoad: protectedRouteMiddleware,
-	component: DashboardApikeyComponent,
+	component: AdminApikeyComponent,
 });
 
 interface ApiKey {
@@ -53,7 +53,7 @@ interface ApiKey {
 	updatedAt: string;
 }
 
-function DashboardApikeyComponent() {
+function AdminApikeyComponent() {
 	const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);

@@ -156,9 +156,8 @@ function Profile() {
 							<Button
 								variant="light"
 								color="orange"
-								leftSection={<IconDashboard size={18} />}
-								onClick={() => navigate({ to: "/dashboard" })}
-							>
+																	leftSection={<IconDashboard size={18} />}
+																	onClick={() => navigate({ to: "/admin" })}							>
 								Admin Panel
 							</Button>
 						)}

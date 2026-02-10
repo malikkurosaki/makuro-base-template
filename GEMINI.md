@@ -39,7 +39,7 @@ This project is **makuro-base-template**, a high-performance, full-stack React d
 The project uses two main categories for testing, consolidated in the `__tests__/` directory:
 
 1.  **API Testing (`__tests__/api/`)**: Uses **Bun's native test runner**. Covers unit tests for utilities, database integration, and Elysia API endpoint verification using `api.handle()`.
-2.  **E2E Testing (`__tests__/e2e/`)**: Uses **Playwright**. Covers end-to-end browser workflows like Login, Signup, and Dashboard interactions. Configured to run against the production build for maximum speed and accuracy.
+2.  **E2E Testing (`__tests__/e2e/`)**: Uses **Playwright**. Covers end-to-end browser workflows like Login, Signup, and Admin interactions. Configured to run against the production build for maximum speed and accuracy.
 
 ## Development Conventions
 

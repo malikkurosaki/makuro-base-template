@@ -25,11 +25,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
 import { authStore } from "../../store/auth";
 
-export const Route = createFileRoute("/dashboard/")({
-	component: DashboardComponent,
+export const Route = createFileRoute("/admin/")({
+	component: AdminComponent,
 });
 
-function DashboardComponent() {
+function AdminComponent() {
 	const snap = useSnapshot(authStore);
 	const navigate = useNavigate();
 
@@ -56,13 +56,9 @@ function DashboardComponent() {
 
 	return (
 		<Container size="lg" py="xl">
-			<Title
-				order={1}
-				ta="center"
-				className=" text-blue-600 p-4 rounded-lg mt-10 shadow-lg"
-			>
-				Dashboard Overview
-			</Title>
+					<Title order={2} c="#fbf0df">
+						Admin Overview
+					</Title>
 
 			{/* User Profile Card */}
 			<Card

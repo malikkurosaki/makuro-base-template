@@ -40,9 +40,9 @@ function SigninComponent() {
 					onRequest: () => {
 						console.log("Sign in request started");
 					},
-					onSuccess: async () => {
-						console.log("Sign in successful, navigating to dashboard");
-						navigate({ to: "/profile", replace: true });
+					onSuccess: () => {
+						console.log("Sign in successful, navigating to admin");
+						navigate({ to: "/admin" });
 					},
 					onError: (ctx) => {
 						setError(ctx.error.message || "Failed to sign in");
