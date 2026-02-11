@@ -15,6 +15,9 @@ if (!baseUrl) {
 export const auth = betterAuth({
 	baseURL: baseUrl,
 	basePath: "/api/auth",
+	logger: {
+		level: "debug",
+	},
 	database: prismaAdapter(prisma, {
 		provider: "postgresql",
 	}),
