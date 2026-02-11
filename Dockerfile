@@ -4,6 +4,14 @@ FROM oven/bun:latest
 # Set the working directory
 WORKDIR /app
 
+# Install build dependencies for native modules (like better-sqlite3)
+# We install python3, make, and g++
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy package files
 COPY package.json bun.lock* ./
 
