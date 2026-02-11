@@ -1,4 +1,3 @@
-import { authClient } from "@/utils/auth-client";
 import {
 	Avatar,
 	Badge,
@@ -23,6 +22,7 @@ import {
 } from "@tabler/icons-react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useSnapshot } from "valtio";
+import { authClient } from "@/utils/auth-client";
 import { authStore } from "../../store/auth";
 
 export const Route = createFileRoute("/admin/")({
@@ -56,9 +56,9 @@ function AdminComponent() {
 
 	return (
 		<Container size="lg" py="xl">
-					<Title order={2} c="#fbf0df">
-						Admin Overview
-					</Title>
+			<Title order={2} c="#fbf0df">
+				Admin Overview
+			</Title>
 
 			{/* User Profile Card */}
 			<Card

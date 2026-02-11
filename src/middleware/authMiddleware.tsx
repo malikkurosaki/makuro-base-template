@@ -1,5 +1,4 @@
 import { redirect } from "@tanstack/react-router";
-import { VITE_PUBLIC_URL } from "../utils/env";
 
 /* ================================
  * Types
@@ -22,7 +21,7 @@ type SessionResponse = {
 
 async function fetchSession(): Promise<SessionResponse | null> {
 	try {
-		const baseURL = VITE_PUBLIC_URL || window.location.origin;
+		const baseURL = import.meta.env?.VITE_PUBLIC_URL || window.location.origin;
 		const res = await fetch(`${baseURL}/api/session`, {
 			method: "GET",
 			credentials: "include",

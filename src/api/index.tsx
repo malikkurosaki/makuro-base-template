@@ -1,4 +1,3 @@
-import { cors } from "@elysiajs/cors";
 import { swagger } from "@elysiajs/swagger";
 import Elysia from "elysia";
 import { apiMiddleware } from "../middleware/apiMiddleware";
@@ -10,14 +9,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const api = new Elysia({
 	prefix: "/api",
-})
-	.use(
-		cors({
-			origin: ["http://localhost:3000", "http://localhost:5173"],
-			credentials: true,
-			allowedHeaders: ["Content-Type", "Authorization", "x-api-key"],
-		}),
-	);
+});
 
 if (!isProduction) {
 	api.use(

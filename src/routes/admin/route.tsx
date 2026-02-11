@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation */
 import {
 	AppShell,
 	Avatar,
@@ -21,7 +22,6 @@ import {
 	IconLogout,
 	IconSettings,
 	IconUser,
-	IconUsers,
 } from "@tabler/icons-react";
 import {
 	createFileRoute,
@@ -92,8 +92,7 @@ function AdminLayout() {
 
 	const isActive = (path: string) => {
 		const current = location.pathname;
-		if (path === "/admin")
-			return current === "/admin" || current === "/admin/";
+		if (path === "/admin") return current === "/admin" || current === "/admin/";
 		return current.startsWith(path);
 	};
 

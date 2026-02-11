@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation */
 import Elysia, { t } from "elysia";
 import { prisma } from "../utils/db";
 import logger from "../utils/logger";

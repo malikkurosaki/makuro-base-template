@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { protectedRouteMiddleware } from "../../middleware/authMiddleware";
 
 export const Route = createFileRoute("/admin/settings")({
 	component: AdminSettingsComponent,

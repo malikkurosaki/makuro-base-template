@@ -3,14 +3,7 @@ import { protectedRouteMiddleware } from "@/middleware/authMiddleware";
 import { authStore } from "@/store/auth";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import {
-	Button,
-	Container,
-	Group,
-	Stack,
-	Text,
-	Title,
-} from "@mantine/core";
+import { Button, Container, Group, Stack, Text, Title } from "@mantine/core";
 import { IconHome, IconQuestionMark } from "@tabler/icons-react";
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 

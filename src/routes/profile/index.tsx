@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation */
 import {
 	ActionIcon,
 	Avatar,
@@ -156,8 +157,9 @@ function Profile() {
 							<Button
 								variant="light"
 								color="orange"
-																	leftSection={<IconDashboard size={18} />}
-																	onClick={() => navigate({ to: "/admin" })}							>
+								leftSection={<IconDashboard size={18} />}
+								onClick={() => navigate({ to: "/admin" })}
+							>
 								Admin Panel
 							</Button>
 						)}

@@ -14,7 +14,6 @@ import { Inspector } from "react-dev-inspector";
 import { createRoot } from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import "./index.css";
-import { IS_DEV, VITE_PUBLIC_URL } from "./utils/env";
 
 // Create a new router instance
 export const router = createRouter({
@@ -33,7 +32,7 @@ const theme = createTheme({
 	/** Theme customization here */
 });
 
-const InspectorWrapper = IS_DEV
+const InspectorWrapper = import.meta.env?.DEV
 	? Inspector
 	: ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
@@ -44,7 +43,7 @@ const app = (
 		onClickElement={(e) => {
 			if (!e.codeInfo) return;
 
-			const url = VITE_PUBLIC_URL;
+			const url = import.meta.env?.VITE_PUBLIC_URL;
 			fetch(`${url}/__open-in-editor`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },

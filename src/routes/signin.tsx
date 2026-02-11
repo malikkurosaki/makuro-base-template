@@ -18,7 +18,6 @@ export const Route = createFileRoute("/signin")({
 	component: SigninComponent,
 });
 
-
 function SigninComponent() {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("");

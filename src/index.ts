@@ -1,34 +1,17 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: penjelasannya */
 
-import { Elysia } from "elysia";
 import fs from "node:fs";
 import path from "node:path";
+import cors from "@elysiajs/cors";
+import { Elysia } from "elysia";
 import api from "./api";
 import { openInEditor } from "./utils/open-in-editor";
+
 const PORT = process.env.PORT || 3000;
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const app = new Elysia()
-	.error(({ code, error, request }) => {
-		const method = request?.method || "UNKNOWN";
-		const url = request?.url || "UNKNOWN";
-
-		if (!error && code === undefined) return;
-
-		console.error(`[ELYSIA ERROR] ${code} on ${method} ${url}:`, error);
-		if (error instanceof Error && error.stack) {
-			console.error(error.stack);
-		}
-
-		const message =
-			error instanceof Error ? error.message : String(error || "Unknown Error");
-		return { error: message, code };
-	})
-	.onBeforeHandle(({ request }) => {
-		console.log(`[APP] ${request.method} ${request.url}`);
-	})
-	.use(api);
+const app = new Elysia().use(api);
 
 if (!isProduction) {
 	// Development: Use Vite middleware
@@ -59,8 +42,7 @@ if (!isProduction) {
 		// Serve transformed index.html for root or any path that should be handled by the SPA
 		if (
 			pathname === "/" ||
-			(!pathname.startsWith("/api") &&
-				!pathname.includes(".") &&
+			(!pathname.includes(".") &&
 				!pathname.startsWith("/@") &&
 				!pathname.startsWith("/inspector") &&
 				!pathname.startsWith("/__open-stack-frame-in-editor"))
@@ -194,16 +176,11 @@ if (!isProduction) {
 	});
 }
 
-app.listen({
-	port: Number(PORT),
-	hostname: "0.0.0.0",
-});
+app.use(cors());
+app.listen(PORT);
 
 console.log(
 	`🚀 Server running at http://localhost:${PORT} in ${isProduction ? "production" : "development"} mode`,
 );
 
 export type ApiApp = typeof app;
-
-
-
