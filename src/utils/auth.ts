@@ -44,13 +44,8 @@ export const auth = betterAuth({
 	trustedOrigins: [
 		"http://localhost:5173",
 		"http://localhost:3000",
-		"http://localhost:3001",
 	],
 	session: {
-		cookieCache: {
-			enabled: true,
-			maxAge: 60 * 60 * 24 * 7, // 7 days
-		},
 		expiresIn: 60 * 60 * 24 * 7, // 7 days
 	},
 	advanced: {

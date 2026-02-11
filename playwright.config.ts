@@ -1,14 +1,17 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// Get base URL from environment, default to localhost:3000
+const BASE_URL = process.env.VITE_PUBLIC_URL || "http://localhost:3000";
+
 export default defineConfig({
 	testDir: "./__tests__/e2e",
-	fullyParallel: true,
+	fullyParallel: false,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
-	workers: process.env.CI ? 1 : undefined,
+	workers: 1,
 	reporter: "html",
 	use: {
-		baseURL: "http://localhost:3000",
+		baseURL: BASE_URL,
 		trace: "on-first-retry",
 		headless: true,
 	},
@@ -20,7 +23,7 @@ export default defineConfig({
 	],
 	webServer: {
 		command: "NODE_ENV=production bun src/index.ts",
-		url: "http://localhost:3000",
+		url: BASE_URL,
 		reuseExistingServer: !process.env.CI,
 		stdout: "ignore",
 		stderr: "pipe",

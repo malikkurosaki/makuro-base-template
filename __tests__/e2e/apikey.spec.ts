@@ -1,116 +1,58 @@
-import { expect, test } from "@playwright/test";
+import { test, expect } from "@playwright/test";
+import { PrismaClient } from "../../generated/prisma/index.js";
+
+const prisma = new PrismaClient();
 
 test.describe("API Key Management", () => {
-	test.beforeEach(async ({ page }) => {
-		// Mock the session API to simulate being logged in as an admin
-		await page.route("**/api/session", async (route) => {
-			await route.fulfill({
-				status: 200,
-				contentType: "application/json",
-				body: JSON.stringify({
-					data: {
-						user: {
-							id: "user_123",
-							name: "Test User",
-							email: "test@example.com",
-							role: "admin",
-						},
-					},
-				}),
-			});
+	const testEmail = `admin-test-${Date.now()}@example.com`;
+	const testPassword = "Password123!";
+	const testName = "Admin User";
+
+	test("should create and delete API key successfully", async ({ page }) => {
+		// 1. Signup
+		await page.goto("/signup");
+		await page.getByLabel("Name").fill(testName);
+		await page.getByLabel("Email").fill(testEmail);
+		await page.getByLabel("Password").fill(testPassword);
+		await page.getByRole("button", { name: "Create account" }).click();
+		await expect(page).toHaveURL(/.*\/profile/);
+
+		// 2. Promote to admin via database
+		await prisma.user.update({
+			where: { email: testEmail },
+			data: { role: "admin" },
 		});
 
-		// Mock the initial empty API keys list
-		await page.route("**/api/apikey/", async (route) => {
-			if (route.request().method() === "GET") {
-				await route.fulfill({
-					status: 200,
-					contentType: "application/json",
-					body: JSON.stringify({ apiKeys: [] }),
-				});
-			} else {
-				await route.continue();
-			}
-		});
-	});
+		// 3. Sign out and sign in again to refresh session role
+		await page.getByRole("button", { name: "Keluar" }).click();
+		await page.getByRole("button", { name: "Keluar" }).nth(1).click();
+		await expect(page).toHaveURL(/.*\/signin/);
 
-	test("should create, update, and delete an API key", async ({ page }) => {
-		// Go to the API Keys page
+		await page.getByLabel("Email").fill(testEmail);
+		await page.getByLabel("Password").fill(testPassword);
+		await page.getByRole("button", { name: "Sign in" }).click();
+		
+		// 4. Go to Admin API Key page
 		await page.goto("/admin/apikey");
+		await expect(page).toHaveURL(/.*\/admin\/apikey/);
+		await expect(page.getByText("API Keys Management")).toBeVisible();
 
-		// 1. CREATE
-		await page.click('button:has-text("Create New API Key")');
-		await page.fill(
-			'input[placeholder="Enter a descriptive name for your API key"]',
-			"My Test Key",
-		);
+		// 5. Create API Key
+		await page.getByRole("button", { name: "Create New API Key" }).first().click();
+		await page.getByLabel("API Key Name").fill("Test Key");
+		await page.getByRole("button", { name: "Create API Key" }).click();
 
-		// Mock the creation response
-		await page.route("**/api/apikey/", async (route) => {
-			if (route.request().method() === "POST") {
-				await route.fulfill({
-					status: 200,
-					contentType: "application/json",
-					body: JSON.stringify({
-						apiKey: {
-							id: "key_1",
-							name: "My Test Key",
-							key: "sk-test-key-12345",
-							isActive: true,
-							expiresAt: null,
-							createdAt: new Date().toISOString(),
-							updatedAt: new Date().toISOString(),
-						},
-					}),
-				});
-			}
-		});
+		// 6. Verify it appears in the list
+		await expect(page.getByText("Test Key")).toBeVisible();
+		await expect(page.getByText("••••••••••••••••••••••••••••••••")).toBeVisible();
 
-		await page.click('button:has-text("Create API Key")');
+		// 7. Delete API Key
+		await page.getByRole("button", { name: "Delete API Key" }).first().click();
+		await expect(page.getByText("Are you sure you want to delete this API key?")).toBeVisible();
+		await page.getByRole("button", { name: "Delete API Key" }).nth(1).click();
 
-		// Verify it appeared in the table
-		const table = page.locator("table").first();
-		await expect(table).toContainText("My Test Key");
-		await expect(table).toContainText("••••••••");
-
-		// 2. UPDATE (Toggle status)
-		// Mock the update response
-		await page.route("**/api/apikey/update", async (route) => {
-			await route.fulfill({
-				status: 200,
-				contentType: "application/json",
-				body: JSON.stringify({
-					apiKey: {
-						id: "key_1",
-						name: "My Test Key",
-						key: "sk-test-key-12345",
-						isActive: false,
-						expiresAt: null,
-						createdAt: new Date().toISOString(),
-						updatedAt: new Date().toISOString(),
-					},
-				}),
-			});
-		});
-
-		// Find and click the switch (Mantine Switch is usually an input type=checkbox)
-		await page.click('input[type="checkbox"]', { force: true });
-
-		// 3. DELETE
-		// Mock the delete response
-		await page.route("**/api/apikey/delete", async (route) => {
-			await route.fulfill({
-				status: 200,
-				contentType: "application/json",
-				body: JSON.stringify({ success: true }),
-			});
-		});
-
-		await page.click("button:has(svg.tabler-icon-trash)");
-		await page.click('button:has-text("Delete API Key")');
-
-		// Verify it's gone
-		await expect(table).not.toContainText("My Test Key");
-		await expect(page.locator("text=No API keys created yet")).toBeVisible();
+		// 8. Verify it's gone
+		await expect(page.getByText("Test Key")).not.toBeVisible();
+		await expect(page.getByText("No API keys created yet")).toBeVisible();
 	});
 });

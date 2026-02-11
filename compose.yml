@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/react_bun_app
+      NODE_ENV: production
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+    depends_on:
+      - db
+    restart: unless-stopped
+    command: >
+      sh -c "
+        until pg_isready -h db -p 5432; do sleep 2; done &&
+        bunx prisma migrate deploy &&
+        bun start
+      "
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "bun", "--version"]
+      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: react_bun_app
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

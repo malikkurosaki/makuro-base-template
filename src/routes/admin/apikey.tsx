@@ -375,6 +375,7 @@ function AdminApikeyComponent() {
 												onClick={() => handleDeleteApiKey(apiKey.id)}
 												variant="light"
 												size="lg"
+												aria-label="Delete API Key"
 											>
 												<IconTrash size={16} />
 											</ActionIcon>
