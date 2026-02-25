@@ -180,7 +180,7 @@ app.use(cors());
 app.listen(PORT);
 
 console.log(
-	`🚀 Server running at http://localhost:${PORT} in ${isProduction ? "production" : "development"} mode`,
+	`🚀 Server running at ${process.env.VITE_PUBLIC_URL} in ${isProduction ? "production" : "development"} mode`,
 );
 
 export type ApiApp = typeof app;

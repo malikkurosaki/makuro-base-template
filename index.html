@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>For You Feed | Desktop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#ee2b8c",
+                "background-light": "#f8f6f7",
+                "background-dark": "#221019",
+              },
+              fontFamily: {
+                "display": ["Plus Jakarta Sans"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+      </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(238, 43, 140, 0.2);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ee2b8c;
+        }
+        .video-snap-container {
+            scroll-snap-type: y mandatory;
+            height: calc(100vh - 72px);
+            overflow-y: scroll;
+        }
+        .video-card {
+            scroll-snap-align: start;
+            height: calc(100vh - 72px);
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-hidden">
+<!-- Header -->
+<header class="fixed top-0 left-0 right-0 h-[72px] bg-background-light dark:bg-background-dark border-b border-primary/10 flex items-center justify-between px-4 z-50">
+<div class="flex items-center gap-2 w-[240px]">
+<div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+<span class="material-icons-round">play_arrow</span>
+</div>
+<span class="text-2xl font-bold tracking-tighter">TokClone</span>
+</div>
+<div class="flex-1 max-w-[500px] relative">
+<input class="w-full bg-primary/5 border border-primary/20 rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm" placeholder="Search accounts and videos" type="text"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary/60 hover:text-primary">
+<span class="material-icons-round">search</span>
+</button>
+</div>
+<div class="flex items-center gap-4 w-[240px] justify-end">
+<button class="flex items-center gap-2 border border-primary/20 px-4 py-2 rounded-lg hover:bg-primary/5 font-semibold">
+<span class="material-icons-round text-primary text-xl">add</span>
+<span>Upload</span>
+</button>
+<button class="text-primary/80 hover:text-primary relative">
+<span class="material-icons-round text-2xl">send</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">3</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-primary/30 overflow-hidden cursor-pointer hover:scale-105 transition-transform">
+<img class="w-full h-full object-cover" data-alt="User profile avatar close up portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1e2W4YWcZdkOgGUfVxfT2r3pxeSV-9XKnTZLQIGxB4shN8oh0yHzS6hJgrzafmu1mSBsVmNqwrY1w45Sgmvf8SzjXVToZ8xjE4n-4XENvIC3s85HArnRAuyKLgjX8u0UZpryekRogrJhwi9igXNxG-vUa094mDJmoF8Emz0lL7ENi6YNDRTxnydQFXCJ2we2A0rHa-hMsnudDyyDXWKHnJ3FMYRh0jJreSRd9-wxSoGlwx9p5pPqV3u8ysUCO2VfodelxJneQBdU"/>
+</div>
+</div>
+</header>
+<div class="pt-[72px] flex h-screen max-w-[1440px] mx-auto">
+<!-- Sidebar -->
+<aside class="w-[240px] sticky top-[72px] h-[calc(100vh-72px)] overflow-y-auto px-4 py-6 flex flex-col gap-6 border-r border-primary/5">
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-4 p-3 text-primary font-bold bg-primary/10 rounded-lg" href="#">
+<span class="material-icons-round text-3xl">home</span>
+<span class="text-lg">For You</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-600 dark:text-slate-400 font-semibold hover:bg-primary/5 rounded-lg" href="#">
+<span class="material-icons-round text-3xl">people_outline</span>
+<span class="text-lg">Following</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-600 dark:text-slate-400 font-semibold hover:bg-primary/5 rounded-lg" href="#">
+<span class="material-icons-round text-3xl">explore</span>
+<span class="text-lg">Explore</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-600 dark:text-slate-400 font-semibold hover:bg-primary/5 rounded-lg" href="#">
+<span class="material-icons-round text-3xl">videocam</span>
+<span class="text-lg">LIVE</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-600 dark:text-slate-400 font-semibold hover:bg-primary/5 rounded-lg" href="#">
+<span class="material-icons-round text-3xl">person_outline</span>
+<span class="text-lg">Profile</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-primary/10">
+<p class="text-xs font-semibold text-slate-500 uppercase px-3 mb-4">Suggested accounts</p>
+<div class="flex flex-col gap-4">
+<!-- Suggested Item -->
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Creator avatar circular portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW2mTAvZJ_yRdyNUfHig3095yHT3XRvQ9LOU4hyGA55ujkzMHxdSMowXrPnxP3NyHX6w0KjAxwM1pDFd6qSHRy0fWMUqC9-yjj-DkNpqwUchVOfXwbSn9v4eT-p5FBZelM0mHaWEgeKuKDDJNVUXJ57EFFm0sHFq7Q8bN6mHbBkkCTGKA5mmOuu3MyF_7EAvH4AwGRZkPMMgW2iaPTvIUsrIh3dWwz18l5aVJSC6Kb9FtTRZSrST9aY-FgrGGAEieeox9ztYCattc"/>
+</div>
+<div>
+<h4 class="text-sm font-bold leading-none">tech_guru</h4>
+<p class="text-xs text-slate-500">Tech Gadgets</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary hover:underline">Follow</button>
+</div>
+<!-- Suggested Item -->
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Female influencer avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpm5i-Myl4nskbK-HZoVNJ54DYsx81tDGyL8q_NiRFGRt6npvi0tQUL3BJFz5HFiGtDnfjjA45Ba2Ara2dKLS1UxLRGZXTKtY6Qg071OwA8fGFX4feWaJNxTDu3sIJqlHjmLsSrer1wx2DEc5FYIrmCop53PvApR-zFpWcgOfT6HlxvM-CXTmswIj5RpJ-4wrFYMMdZTnDYE0YVJ64E0bNcpwO2nyTFhAJkoJrUBc0uRvXnkZ1uYzFWaJPfIQ7WUF1ZAgTTTUZWd0"/>
+</div>
+<div>
+<h4 class="text-sm font-bold leading-none">fitness_lisa</h4>
+<p class="text-xs text-slate-500">Healthy Life</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary hover:underline">Follow</button>
+</div>
+<!-- Suggested Item -->
+<div class="flex items-center justify-between px-2">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Male creator profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9QNUFsThLsW6k6dHdXgUfp-eYZZACfp_v-7ro2hLhdjAL6mCc9ztil58Cr_nQ72julM-RK_gsxcRiDJT_RjITVhXLx29mLZDFcxY76R7vrjkNZAzsOAgWZGaqBly6bNfV9uK_c2IP9ki7jR52_7kqCd7nAufLg_8BfA7x6DjCwThMqAlr7iRLv1XXzJj193saObWTJucOlCccerghSHggC1nxKmK8JjYCo3kZW8M51EJ8aWUjPH_0MYsTtOumDu6ooyuQv_ph1CA"/>
+</div>
+<div>
+<h4 class="text-sm font-bold leading-none">chef_marco</h4>
+<p class="text-xs text-slate-500">Italian Food</p>
+</div>
+</div>
+<button class="text-xs font-bold text-primary hover:underline">Follow</button>
+</div>
+</div>
+<button class="mt-4 px-3 text-sm font-bold text-primary">See all</button>
+</div>
+<div class="mt-auto p-4 bg-primary/10 rounded-xl border border-primary/20 mb-8">
+<p class="text-sm font-semibold mb-3">Experience the full app</p>
+<button class="w-full py-2 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                    Get App
+                </button>
+</div>
+</aside>
+<!-- Main Feed Content -->
+<main class="flex-1 flex flex-col video-snap-container bg-black/10 dark:bg-black/40">
+<!-- Video Post 1 -->
+<section class="video-card flex items-center justify-center py-6">
+<div class="h-full flex gap-4 max-w-4xl w-full justify-center">
+<!-- Video Container -->
+<div class="relative h-full aspect-[9/16] bg-slate-900 rounded-xl overflow-hidden shadow-2xl group border border-white/5">
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Vertical mobile video frame showing city lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp-NcL8JPFgwyXSkWo9jOSrafEWXqo3p7q1CUYVnbkexW6ybmeRBQiV8dem-ZuQrg3P4S6_kq97z1ahZO3mX5bAkWS2LzqTvG02nWp2snWalZBqSncM5QRfR2_qtrMXcx41DYlsUaWzC7pIjUaGK9CwQDDcX7JDn9J-8dEVtkPtSqb_1IBdFJcKeTPiI9QoEocHtX5CgpjEZHqB_u3sNbfsvqxXHA24nC7LJRxlGA7XgwFp-x-KGbe7-uE_h7sn_TeiBU-JoS97pk"/>
+<button class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons-round text-white text-7xl bg-black/20 rounded-full p-4">play_arrow</span>
+</button>
+</div>
+<!-- Video Overlay (Bottom) -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-bold text-white hover:underline cursor-pointer">@nature_explorer</h3>
+<span class="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded border border-primary/20">Follow</span>
+</div>
+<p class="text-white text-sm mb-3 line-clamp-2">Just discovered this amazing hidden waterfall! Nature never fails to amaze. 🌿✨ #nature #adventure #hiddenplaces</p>
+<div class="flex items-center gap-2 text-white/90">
+<span class="material-icons-round text-sm">music_note</span>
+<div class="overflow-hidden whitespace-nowrap text-xs">
+<div class="animate-marquee inline-block">Original Sound - Nature Sounds Collective 2024 - New Age Music</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+<div class="h-full bg-primary w-1/3"></div>
+</div>
+</div>
+<!-- Interaction Bar -->
+<div class="flex flex-col justify-end gap-5 pb-4">
+<div class="flex flex-col items-center gap-1 group">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">favorite</span>
+</button>
+<span class="text-xs font-bold text-slate-500">124.5K</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">mode_comment</span>
+</button>
+<span class="text-xs font-bold text-slate-500">2,410</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">bookmark</span>
+</button>
+<span class="text-xs font-bold text-slate-500">45.2K</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">share</span>
+</button>
+<span class="text-xs font-bold text-slate-500">8,912</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Video Post 2 -->
+<section class="video-card flex items-center justify-center py-6">
+<div class="h-full flex gap-4 max-w-4xl w-full justify-center">
+<!-- Video Container -->
+<div class="relative h-full aspect-[9/16] bg-slate-900 rounded-xl overflow-hidden shadow-2xl group border border-white/5">
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Workout scene in a modern dark gym" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVTCW7e0XdrjyjGg4brbTHfbM_RAeN7AoAUx7naGmL2_aLWDiGzM1lVeo7AiO22wY5TJbUE3OmuZgdIOJvdd2d98JL1VurdPHc94BX7uHrDAm3VxOS32pwZmLp0O8gJuHiMDTi20-6k05D-XqrZWcXFfnunffH6TMuXI4Ey2ZLrE1Uyg_OyPrbc1qpisYR0iJHDVQPk8tmxg5OOlkJQoMHDQBvxB4ZRpNFrVWrLbBWYfK8HCE1c0WaV9eeyIHDJnQ9XR_e6pR9sWo"/>
+<button class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-icons-round text-white text-7xl bg-black/20 rounded-full p-4">play_arrow</span>
+</button>
+</div>
+<!-- Video Overlay (Bottom) -->
+<div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+<div class="flex items-center gap-2 mb-2">
+<h3 class="font-bold text-white hover:underline cursor-pointer">@gym_junkie_99</h3>
+<span class="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded border border-primary/20">Follow</span>
+</div>
+<p class="text-white text-sm mb-3 line-clamp-2">Early morning grind. No excuses. Let's get it! 💪🔥 #fitness #motivation #workout</p>
+<div class="flex items-center gap-2 text-white/90">
+<span class="material-icons-round text-sm">music_note</span>
+<div class="overflow-hidden whitespace-nowrap text-xs">
+<div class="animate-marquee inline-block">Workout Phonk - Epic Bass Music - 2024 Hits</div>
+</div>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/20">
+<div class="h-full bg-primary w-[75%]"></div>
+</div>
+</div>
+<!-- Interaction Bar -->
+<div class="flex flex-col justify-end gap-5 pb-4">
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">favorite</span>
+</button>
+<span class="text-xs font-bold text-slate-500">892.1K</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">mode_comment</span>
+</button>
+<span class="text-xs font-bold text-slate-500">12.5K</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">bookmark</span>
+</button>
+<span class="text-xs font-bold text-slate-500">102K</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<button class="w-12 h-12 bg-white/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-white hover:bg-primary hover:scale-110 transition-all shadow-lg">
+<span class="material-icons-round text-2xl">share</span>
+</button>
+<span class="text-xs font-bold text-slate-500">15.2K</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>
