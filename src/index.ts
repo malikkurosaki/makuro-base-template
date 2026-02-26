@@ -6,12 +6,19 @@ import cors from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import api from "./api";
 import { openInEditor } from "./utils/open-in-editor";
+import packageJson from "../package.json";
 
 const PORT = process.env.PORT || 3000;
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const app = new Elysia().use(api);
+const app = new Elysia()
+.get("/version", () => {
+	return {
+		version: packageJson.version,
+	};
+})
+.use(api);
 
 if (!isProduction) {
 	// Development: Use Vite middleware
