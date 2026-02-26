@@ -13,12 +13,12 @@ const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === "production";
 
 const app = new Elysia()
-.get("/version", () => {
-	return {
-		version: packageJson.version,
-	};
-})
-.use(api);
+	.get("/version", () => {
+		return {
+			version: packageJson.version,
+		};
+	})
+	.use(api);
 
 if (!isProduction) {
 	// Development: Use Vite middleware
