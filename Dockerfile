@@ -29,7 +29,7 @@ ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/db"
 RUN bun x prisma generate
 
 # Build the application frontend
-ARG VITE_PUBLIC_URL=http://localhost:3000
+ARG VITE_PUBLIC_URL
 ENV VITE_PUBLIC_URL=$VITE_PUBLIC_URL
 
 # Generate API types

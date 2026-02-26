@@ -46,5 +46,6 @@ export const auth = betterAuth({
 	},
 	advanced: {
 		cookiePrefix: "bun-react",
+		trustProxy: true,
 	},
 });

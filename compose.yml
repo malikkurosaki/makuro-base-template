@@ -8,9 +8,11 @@ services:
       NODE_ENV: production
       # Better Auth environment variables
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-secret}
-      BETTER_AUTH_URL: http://localhost:3000
+      BETTER_AUTH_URL: ${VITE_PUBLIC_URL}
+      VITE_PUBLIC_URL: ${VITE_PUBLIC_URL}
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
       GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+    env_file: .env
     depends_on:
       db:
         condition: service_healthy
