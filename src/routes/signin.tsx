@@ -9,7 +9,7 @@ import {
 	TextInput,
 	Title,
 } from "@mantine/core";
-import { IconBrandGithub } from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { authClient } from "../utils/auth-client";
@@ -118,6 +118,21 @@ function SigninComponent() {
 					}}
 				>
 					Continue with GitHub
+				</Button>
+
+				<Button
+					variant="outline"
+					fullWidth
+					mt="xs"
+					leftSection={<IconBrandGoogle size={18} />}
+					onClick={async () => {
+						await authClient.signIn.social({
+							provider: "google",
+							callbackURL: "/profile",
+						});
+					}}
+				>
+					Continue with Google
 				</Button>
 			</Paper>
 		</Container>
