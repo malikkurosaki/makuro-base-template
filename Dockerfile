@@ -1,16 +1,12 @@
 # Stage 1: Build
-FROM debian:bookworm-slim AS build
+FROM oven/bun:1.3 AS build
 
-# Install dependencies
+# Install build dependencies for native modules
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
     python3 \
     make \
     g++ \
     && rm -rf /var/lib/apt/lists/*
-
-# Copy Bun from official image (handles multi-arch automatically)
-COPY --from=oven/bun:1.2.4 /usr/local/bin/bun /usr/local/bin/bun
 
 # Set the working directory
 WORKDIR /app
@@ -24,13 +20,11 @@ RUN bun install --frozen-lockfile
 # Copy the rest of the application code
 COPY . .
 
-# Generate Prisma client
-ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/db"
-RUN bun x prisma generate
+# Use .env.example as default env for build
+RUN cp .env.example .env
 
-# Build the application frontend
-ARG VITE_PUBLIC_URL
-ENV VITE_PUBLIC_URL=$VITE_PUBLIC_URL
+# Generate Prisma client
+RUN bun x prisma generate
 
 # Generate API types
 RUN bun run gen:api
@@ -39,19 +33,15 @@ RUN bun run gen:api
 RUN bun run build
 
 # Stage 2: Runtime
-FROM debian:bookworm-slim AS runtime
+FROM oven/bun:1.3-slim AS runtime
 
 # Set environment variables
 ENV NODE_ENV=production
 
 # Install runtime dependencies
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
-
-# Copy Bun from official image
-COPY --from=oven/bun:1.2.4 /usr/local/bin/bun /usr/local/bin/bun
 
 # Set the working directory
 WORKDIR /app
