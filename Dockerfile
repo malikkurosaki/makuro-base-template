@@ -48,6 +48,7 @@ WORKDIR /app
 
 # Copy necessary files from build stage
 COPY --from=build /app/package.json ./
+COPY --from=build /app/tsconfig.json ./
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/generated ./generated
 COPY --from=build /app/src ./src
